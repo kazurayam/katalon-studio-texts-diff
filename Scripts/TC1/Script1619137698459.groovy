@@ -21,7 +21,7 @@ DiffRowGenerator generator =
 	DiffRowGenerator.create()
 					.showInlineDiffs(true)
 					.inlineDiffByWord(true)
-					.oldTag({ f -> "~" } as Function)
+					.oldTag({ f -> "*" } as Function)
 					.newTag({ f -> "**" } as Function)
 					.build()
 

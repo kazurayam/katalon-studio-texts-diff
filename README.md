@@ -23,7 +23,7 @@ As minimum requirement, they want to know if 2 texts are completely identical or
 Additionally they want to see the differences, if any, in human-readable format, such as 
 [Markdown](https://guides.github.com/features/mastering-markdown/).
 
-Testers usually do not require Patching features which many "diff utilities" provides.
+Testers usually do not require Patching features which many "diff utilities" provide.
 
 I want to perform texts-diff and reporting in Katalon Studio.
 
@@ -54,8 +54,8 @@ The `<projectDir>/out.md` will be formated in Markdown like this:
 |-----|--------|-------|
 |1|&lt;doc&gt;|&lt;doc&gt;|
 |2|&lt;body&gt;|&lt;body&gt;|
-|3|~&lt;section&gt;~|**&lt;section id="main"&gt;**|
-|4|&lt;p&gt;Hello, ~John!&lt;~/p&gt;|&lt;p&gt;Hello, **Paul!&lt;**/p&gt;|
+|3|*&lt;section&gt;*|**&lt;section id="main"&gt;**|
+|4|&lt;p&gt;Hello, *John!&lt;*/p&gt;|&lt;p&gt;Hello, **Paul!&lt;**/p&gt;|
 |5||**&lt;p&gt;Have a break!&lt;/p&gt;**|
 |6|&lt;/section&gt;|&lt;/section&gt;|
 |7|&lt;/body&gt;|&lt;/body&gt;|
@@ -72,8 +72,8 @@ I copy & past it here:
 |-----|--------|-------|
 |1|&lt;doc&gt;|&lt;doc&gt;|
 |2|&lt;body&gt;|&lt;body&gt;|
-|3|~&lt;section&gt;~|**&lt;section id="main"&gt;**|
-|4|&lt;p&gt;Hello, ~John!&lt;~/p&gt;|&lt;p&gt;Hello, **Paul!&lt;**/p&gt;|
+|3|*&lt;section&gt;*|**&lt;section id="main"&gt;**|
+|4|&lt;p&gt;Hello, *John!&lt;*/p&gt;|&lt;p&gt;Hello, **Paul!&lt;**/p&gt;|
 |5||**&lt;p&gt;Have a break!&lt;/p&gt;**|
 |6|&lt;/section&gt;|&lt;/section&gt;|
 |7|&lt;/body&gt;|&lt;/body&gt;|
