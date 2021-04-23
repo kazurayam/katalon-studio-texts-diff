@@ -28,11 +28,12 @@ List<DiffRow> rows = generator.generateDiffRows(original, revised)
 
 // print the diff info in Markdown format into a file out.md
 StringBuilder sb = new StringBuilder() 
-sb.append("|original|revised|\n");
-sb.append("|--------|-------|\n");
-for (DiffRow row : rows) {
-	sb.append("|" + row.getOldLine() + "|" + row.getNewLine() + "|\n");
+sb.append("|#|original|revised|\n");
+sb.append("|---|--------|-------|\n");
+rows.eachWithIndex { DiffRow row, int index ->
+	sb.append("|" + index+1 + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n");
 }
+
 //println sb.toString()
 Path out = projectDir.resolve("out.md")
 out.toFile().text = sb.toString()
