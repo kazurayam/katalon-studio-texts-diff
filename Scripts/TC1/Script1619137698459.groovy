@@ -30,8 +30,8 @@ List<DiffRow> rows = generator.generateDiffRows(original, revised)
 StringBuilder sb = new StringBuilder() 
 sb.append("|#|original|revised|\n");
 sb.append("|---|--------|-------|\n");
-rows.eachWithIndex { DiffRow row, int index ->
-	sb.append("|" + index+1 + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n");
+rows.eachWithIndex { DiffRow row, index ->
+	sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n");
 }
 
 //println sb.toString()
