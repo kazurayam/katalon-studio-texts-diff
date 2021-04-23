@@ -47,8 +47,8 @@ unzip it, open it with your Katalon Studio.
 The `<projectDir>/out.md` will be formated in Markdown like this:
 
 ```
-original: /Users/username/projectdir/Include/fixtures/doc1.xml
-revised : /Users/username/projectdir//Include/fixtures/doc2.xml
+- original: /Users/username/projectdir/Include/fixtures/doc1.xml
+- revised : /Users/username/projectdir//Include/fixtures/doc2.xml
 
 |line#|original|revised|
 |-----|--------|-------|
@@ -65,8 +65,8 @@ revised : /Users/username/projectdir//Include/fixtures/doc2.xml
 I copy & past it here:
 
 ----
-original: /Users/username/projectdir/Include/fixtures/doc1.xml
-revised : /Users/username/projectdir//Include/fixtures/doc2.xml
+- original: `/Users/username/projectdir/Include/fixtures/doc1.xml`
+- revised : `/Users/username/projectdir//Include/fixtures/doc2.xml`
 
 |line#|original|revised|
 |-----|--------|-------|
@@ -80,7 +80,8 @@ revised : /Users/username/projectdir//Include/fixtures/doc2.xml
 |8|&lt;/doc&gt;|&lt;/doc&gt;|
 ----
 
-It is well--readable, isn't it?
+I think it is readable enough. Of course you can change the Test Case code so that it outputs in any format you like.
+
 
 
 ## Where to get external dependencies

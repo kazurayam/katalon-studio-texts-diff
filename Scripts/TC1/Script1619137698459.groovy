@@ -17,19 +17,20 @@ List<String> original = Files.readAllLines(doc1);
 List<String> revised = Files.readAllLines(doc2);
 
 // Compute the difference between two texts and print it in humann-readable markup style
-DiffRowGenerator generator = DiffRowGenerator.create()
-								.showInlineDiffs(true)
-								.inlineDiffByWord(true)
-								.oldTag({ f -> "~" } as Function)
-								.newTag({ f -> "**" } as Function)
-								.build()
+DiffRowGenerator generator = 
+	DiffRowGenerator.create()
+					.showInlineDiffs(true)
+					.inlineDiffByWord(true)
+					.oldTag({ f -> "~" } as Function)
+					.newTag({ f -> "**" } as Function)
+					.build()
 
 List<DiffRow> rows = generator.generateDiffRows(original, revised)
 
 // print the diff info in Markdown format into a file out.md
 StringBuilder sb = new StringBuilder()
-sb.append("original: ${doc1}\n")
-sb.append("revised : ${doc2}\n\n")
+sb.append("- original: `${doc1}`\n")
+sb.append("- revised : `${doc2}`\n\n")
 sb.append("|line#|original|revised|\n");
 sb.append("|-----|--------|-------|\n");
 rows.eachWithIndex { DiffRow row, index ->
