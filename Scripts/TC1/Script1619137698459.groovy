@@ -27,9 +27,11 @@ DiffRowGenerator generator = DiffRowGenerator.create()
 List<DiffRow> rows = generator.generateDiffRows(original, revised)
 
 // print the diff info in Markdown format into a file out.md
-StringBuilder sb = new StringBuilder() 
-sb.append("|#|original|revised|\n");
-sb.append("|---|--------|-------|\n");
+StringBuilder sb = new StringBuilder()
+sb.append("original: ${doc1}\n")
+sb.append("revised : ${doc2}\n\n")
+sb.append("|line#|original|revised|\n");
+sb.append("|-----|--------|-------|\n");
 rows.eachWithIndex { DiffRow row, index ->
 	sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n");
 }
