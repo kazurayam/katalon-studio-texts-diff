@@ -2,6 +2,7 @@ Utilizing java-diff-utils in Katalon Studio
 ===========================================
 
 date April, 2021
+
 author kazurayam
 
 This is a small [Katalon Studio](https://www.katalon.com/) project for demonstration purpose.
@@ -11,11 +12,11 @@ This project was developed with Katalon Studio v7.9.1 but is not KS-version-depe
 This project was created in order to propose a solution to the following post 
 in the Katalon Studio User Forum:
 
-- [How can I compare 2 XML files](https://forum.katalon.com/t/how-can-i-compare-2-xml-files/44854/4)
+- [How can I compare 2 XML files](https://forum.katalon.com/t/how-can-i-compare-2-xml-files/44854)
 
 # Problem to solve
 
-Web testers often want to compare 2 text files. The files could be various format: CSV, JSON, XML, etc.
+Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc.
 
 As minimum requirement, they want to know if 2 texts are completely identical or not.
 
@@ -35,7 +36,7 @@ Utilize [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/wik
 - Download the zip of this project from the [Releases](https://github.com/kazurayam/katalon-studio-texts-diff/releases) page, 
 unzip it, open it with your Katalon Studio.
 - In the `<projectDir>/Drivers` directory, you will find `java-diff-utils-4.9.jar` installed.
-- open [`Test Cases/TC1`](./Scripts/Script1619137698459.groovy) and run it.
+- open [`Test Cases/TC1`](./Scripts/TC1/Script1619137698459.groovy) and run it.
 - the script will compare 2 xml files
   - [`doc1.xml`](./Include/fixtures/doc1.xml)
   - [`doc2.xml`](./Include/fixtures/doc2.xml)
