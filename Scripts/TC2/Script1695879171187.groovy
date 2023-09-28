@@ -28,7 +28,7 @@ CustomKeywords.'com.kazurayam.ks.TextDiffer.execute'(
 	)
 	
 CustomKeywords.'com.kazurayam.ks.TextDiffer.execute'(
-	// how to get the project directory? --- this is the way
+	// how to get the Katalon project's directory? --- this is the way
 	RunConfiguration.getProjectDir(),            /* base dir          */ 
 	"src/test/fixtures/doc1.xml",                /* input as original */ 
 	"src/test/fixtures/doc2.xml",                /* input as revised  */ 
