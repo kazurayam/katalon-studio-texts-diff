@@ -12,11 +12,8 @@ import com.kms.katalon.core.configuration.RunConfiguration
  * Test Cases/TC1
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path outputDir = projectDir.resolve("build/tmp")
-Files.createDirectories(outputDir)
-
-Path doc1 = projectDir.resolve("Include/fixtures/doc1.xml")
-Path doc2 = projectDir.resolve("Include/fixtures/doc2.xml")
+Path doc1 = projectDir.resolve("src/test/fixtures/doc1.xml")
+Path doc2 = projectDir.resolve("src/test/fixtures/doc2.xml")
 
 //build simple lists of the lines of the two text files
 List<String> original = Files.readAllLines(doc1);
@@ -59,5 +56,7 @@ rows.eachWithIndex { DiffRow row, index ->
 
 
 //println the diff report into the output file
+Path outputDir = projectDir.resolve("build/tmp")
+Files.createDirectories(outputDir)
 Path out = outputDir.resolve("TC1-output.md")
 out.toFile().text = sb.toString()

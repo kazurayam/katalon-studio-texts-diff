@@ -10,18 +10,24 @@ import com.github.difflib.text.DiffRow
 import com.github.difflib.text.DiffRowGenerator
 import com.kms.katalon.core.annotation.Keyword
 
+/**
+ * Compare 2 text files, create a report which shows the diff of the 2 inputs.
+ * The report is in Markdown format. 
+ * 
+ * @author kazurayam
+ */
 public class TextDiffer {
 
 	public TextDiffer() {}
-	
+
 	@Keyword
 	public void execute(String text1, String text2, String output) {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
-		this.execute(null, Paths.get(text1), Paths.get(text2), Paths.get(output));
+		this.execute(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
 	}
-	
+
 	@Keyword
 	public void execute(String baseDir, String text1, String text2, String output) {
 		Objects.requireNonNull(baseDir)
@@ -31,10 +37,12 @@ public class TextDiffer {
 		Path dir = Paths.get(baseDir)
 		this.execute(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
 	}
-	
+
 	public void execute(Path baseDir, Path text1, Path text2, Path output) {
-		validateParams(baseDir, text1, text2, output)
-		
+		validateInputs(baseDir, text1, text2)
+		baseDir = baseDir.toAbsolutePath()
+		ensureParentDir(output)
+
 		//read all lines of the two text files
 		List<String> original = Files.readAllLines(text1)
 		List<String> revised = Files.readAllLines(text2)
@@ -56,8 +64,8 @@ public class TextDiffer {
 
 		// generate a diff report in Markdown format
 		StringBuilder sb = new StringBuilder()
-		sb.append("- original: `${(baseDir != null) ? baseDir.relativize(text1) : text1}`\n")
-		sb.append("- revised : `${(baseDir != null) ? baseDir.relativize(text2) : text2}`\n\n")
+		sb.append("- original: `${ relativize(baseDir, text1) }`\n")
+		sb.append("- revised : `${ relativize(baseDir, text2) }`\n\n")
 
 		sb.append((equalRows.size() < rows.size()) ? '**DIFFERENT**' : '**NO DIFF**')
 		sb.append("\n\n")
@@ -77,26 +85,40 @@ public class TextDiffer {
 		output.toFile().text = sb.toString()
 	}
 
-	private void validateParams(Path baseDir, Path text1, Path text2, Path output) throws Exception {
+	private void validateInputs(Path baseDir, Path text1, Path text2) throws Exception {
 		// baseDir can be null
 		if (baseDir != null) {
 			if (!Files.exists(baseDir)) {
-				throw new FileNotFoundException(baseDir)
+				throw new FileNotFoundException(baseDir.toString())
 			}
 		}
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
-		Objects.requireNonNull(output)
 		if (!Files.exists(text1)) {
-			throw new FileNotFoundException(text1)
+			throw new FileNotFoundException(text1.toString())
 		}
 		if (!Files.exists(text2)) {
-			throw new FileNotFoundException(text2)
-		}
-		Path outDir = output.getParent()
-		if (!Files.exists(outDir)) {
-			throw new FileNotFoundException(outDir)
+			throw new FileNotFoundException(text2.toString())
 		}
 	}
 
+	private void ensureParentDir(Path output) {
+		Path p = output.getParent();
+		if (!Files.exists(p)) {
+			Files.createDirectories(p)
+		}
+	}
+
+	private String relativize(Path baseDir, Path file) {
+		assert baseDir.isAbsolute()
+		if (file.isAbsolute()) {
+			return file.normalize().toString()
+		} else {
+			try {
+				return baseDir.relativize(file).normalize().toString()
+			} catch (Exception e) {
+				return file.normalize().toString()
+			}
+		}
+	}
 }
