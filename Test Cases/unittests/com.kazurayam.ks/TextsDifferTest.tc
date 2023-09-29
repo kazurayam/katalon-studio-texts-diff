@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>TextDifferTest</name>
+   <name>TextsDifferTest</name>
    <tag></tag>
    <comment></comment>
    <testCaseGuid>97f74168-9095-4928-8460-f92817aae883</testCaseGuid>

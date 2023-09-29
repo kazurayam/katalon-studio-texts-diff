@@ -16,9 +16,9 @@ import com.kms.katalon.core.annotation.Keyword
  * 
  * @author kazurayam
  */
-public class TextDiffer {
+public class TextsDiffer {
 
-	public TextDiffer() {}
+	public TextsDiffer() {}
 
 	@Keyword
 	public void processFiles(String text1, String text2, String output) {
@@ -70,7 +70,7 @@ public class TextDiffer {
 		sb.append(mdStats(insertedRows, deletedRows, changedRows, equalRows))
 		sb.append("\n")
 		sb.append(mdDetail(rows))
-		
+
 		//println the diff report into the output file
 		output.toFile().text = sb.toString()
 	}
@@ -111,23 +111,23 @@ public class TextDiffer {
 			}
 		}
 	}
-	
+
 	private String mdFilePath(Path baseDir, Path text1, Path text2) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("- original: `${ relativize(baseDir, text1) }`\n")
 		sb.append("- revised : `${ relativize(baseDir, text2) }`\n\n")
 		return sb.toString()
 	}
-	
+
 	private String mdDifferentOrNot(List<DiffRow> rows, List<DiffRow> equalRows) {
 		StringBuilder sb = new StringBuilder()
 		sb.append((equalRows.size() < rows.size()) ? '**DIFFERENT**' : '**NO DIFF**')
 		sb.append("\n")
 		return sb.toString()
 	}
-	
-	private String mdStats(List<DiffRow> insertedRows, List<DiffRow> deletedRows, 
-		List<DiffRow> changedRows, List<DiffRow> equalRows) {
+
+	private String mdStats(List<DiffRow> insertedRows, List<DiffRow> deletedRows,
+			List<DiffRow> changedRows, List<DiffRow> equalRows) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("- inserted rows: ${insertedRows.size()}\n")
 		sb.append("- deleted rows : ${deletedRows.size()}\n")
@@ -135,7 +135,7 @@ public class TextDiffer {
 		sb.append("- equal rows:  : ${equalRows.size()}\n")
 		return sb.toString()
 	}
-	
+
 	private String mdDetail(List<DiffRow> rows) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("|line#|original|revised|\n")

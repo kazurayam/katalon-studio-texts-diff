@@ -2,11 +2,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-import com.kazurayam.ks.TextDiffer
+import com.kazurayam.ks.TextsDiffer
 import com.kms.katalon.core.configuration.RunConfiguration
 
 /**
- * Test Cases/unittests/com.kazurayam.ks/TextDifferTest
+ * Test Cases/unittests/com.kazurayam.ks/TextsDifferTest
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path outputDir = projectDir.resolve("build/tmp")
@@ -16,7 +16,7 @@ Path doc1 = projectDir.resolve("src/test/fixtures/doc1.xml")
 Path doc2 = projectDir.resolve("src/test/fixtures/doc2.xml")
 Path out = outputDir.resolve("test-output.md")
 
-TextDiffer differ = new TextDiffer()
+TextsDiffer differ = new TextsDiffer()
 differ.processFiles(projectDir, doc1, doc2, out)
 
 assert Files.exists(out)
