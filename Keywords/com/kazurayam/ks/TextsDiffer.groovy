@@ -100,8 +100,8 @@ public class TextsDiffer {
 				DiffRowGenerator.create()
 				.showInlineDiffs(true)
 				.inlineDiffByWord(true)
-				.oldTag({ f -> f ? "<span style=\"color:red\">" : "</span>" } as Function)
-				.newTag({ f -> f ? "<span style=\"color:green\">" : "</span>" } as Function)
+				.oldTag({ f -> f ? "<span style=\"color:red; font-weight:bold; background-color:#ffeef0\">" : "</span>" } as Function)
+				.newTag({ f -> f ? "<span style=\"color:green; font-weight:bold; background-color:#e6ffec\">" : "</span>" } as Function)
 				.build();
 
 		List<DiffRow> rows = generator.generateDiffRows(original, revised);
@@ -210,9 +210,9 @@ public class TextsDiffer {
 			return " "
 		}
 	}
-	
+
 	private static String TAG_INSERTED_COLOR = "#e6ffec";
 	private static String TAG_DELETED_COLOR  = "#ffeef0";
 	private static String TAG_CHANGED_COLOR  = "#dbedff";
-	
+
 }
