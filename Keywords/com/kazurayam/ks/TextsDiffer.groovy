@@ -100,8 +100,8 @@ public class TextsDiffer {
 				DiffRowGenerator.create()
 				.showInlineDiffs(true)
 				.inlineDiffByWord(true)
-				.oldTag({ f -> "*" } as Function)
-				.newTag({ f -> "**" } as Function)
+				.oldTag({ f -> f ? "<span style=\"color:red\">" : "</span>" } as Function)
+				.newTag({ f -> f ? "<span style=\"color:green\">" : "</span>" } as Function)
 				.build();
 
 		List<DiffRow> rows = generator.generateDiffRows(original, revised);
@@ -190,15 +190,15 @@ public class TextsDiffer {
 
 	private String mdDetail(List<DiffRow> rows) {
 		StringBuilder sb = new StringBuilder()
-		sb.append("|line#| |original|revised|\n")
-		sb.append("|-----| |--------|-------|\n")
+		sb.append("|line#|S|original|revised|\n")
+		sb.append("|-----|-|--------|-------|\n")
 		rows.eachWithIndex { DiffRow row, index ->
-			sb.append("|" + (index+1) + "|" + getStatus(row) + "|" + 
-				row.getOldLine() + "|" + row.getNewLine() + "|\n")
+			sb.append("|" + (index+1) + "|" + getStatus(row) + "|" +
+					row.getOldLine() + "|" + row.getNewLine() + "|\n")
 		}
 		return sb.toString()
 	}
-	
+
 	private String getStatus(DiffRow dr) {
 		if (dr.getTag() == DiffRow.Tag.INSERT) {
 			return "I"
@@ -210,4 +210,9 @@ public class TextsDiffer {
 			return " "
 		}
 	}
+	
+	private static String TAG_INSERTED_COLOR = "#e6ffec";
+	private static String TAG_DELETED_COLOR  = "#ffeef0";
+	private static String TAG_CHANGED_COLOR  = "#dbedff";
+	
 }
