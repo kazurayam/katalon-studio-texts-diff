@@ -1,7 +1,7 @@
 import com.kazurayam.ks.TextsDiffer
 
 /**
- * Test Cases/unittests/com.kazurayam.ks.TextsDiffer/processStringTest
+ * Test Cases/TC3
  */
 String text1 = """<doc>
 <body>

@@ -42,18 +42,18 @@ public class TextsDiffer {
 	public void processFiles(Path baseDir, Path text1, Path text2, Path output) {
 		validateInputs(baseDir, text1, text2)
 		baseDir = baseDir.toAbsolutePath()
-		
+
 		//read all lines of the two text files
 		List<String> original = Files.readAllLines(text1)
 		List<String> revised = Files.readAllLines(text2)
 
 		StringBuilder sb = new StringBuilder()
-		
+
 		// compile the diff report with the file path information
 		sb.append(mdFilePath(baseDir, text1, text2))
 		sb.append("\n")
 		sb.append(compileReport(original, revised))
-		
+
 		//println the diff report into the output file
 		ensureParentDir(output)
 		output.toFile().text = sb.toString()
@@ -63,16 +63,16 @@ public class TextsDiffer {
 	public String processStrings(String text1, String text2) {
 		return processReaders(new StringReader(text1), new StringReader(text2))
 	}
-	
+
 	public String processReaders(Reader reader1, Reader reader2) {
 		List<String> original = readAllLines(reader1)
 		List<String> revised = readAllLines(reader2)
-		
+
 		StringBuilder sb = new StringBuilder()
 		sb.append(compileReport(original, revised))
 		return sb.toString()
 	}
-	
+
 	public String processInputStreams(InputStream is1, InputStream is2) {
 		Objects.requireNonNull(is1)
 		Objects.requireNonNull(is2)
@@ -80,14 +80,40 @@ public class TextsDiffer {
 		Reader reader2 = new InputStreamReader(is2, StandardCharsets.UTF_8)
 		return processReaders(reader1, reader2)
 	}
-	
+
+	public String compileReport(List<String> original, List<String> revised) {
+		// compute the difference between the two
+		DiffRowGenerator generator =
+				DiffRowGenerator.create()
+				.showInlineDiffs(true)
+				.inlineDiffByWord(true)
+				.oldTag({ f -> "*" } as Function)
+				.newTag({ f -> "**" } as Function)
+				.build();
+
+		List<DiffRow> rows = generator.generateDiffRows(original, revised);
+		List<DiffRow> insertedRows = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.INSERT}).collect(Collectors.toList());
+		List<DiffRow> deletedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.DELETE}).collect(Collectors.toList());
+		List<DiffRow> changedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.CHANGE}).collect(Collectors.toList());
+		List<DiffRow> equalRows    = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.EQUAL}).collect(Collectors.toList());
+
+		// generate a diff report in Markdown format
+		StringBuilder sb = new StringBuilder()
+		sb.append(mdDifferentOrNot(rows, equalRows))
+		sb.append("\n")
+		sb.append(mdStats(insertedRows, deletedRows, changedRows, equalRows))
+		sb.append("\n")
+		sb.append(mdDetail(rows))
+		return sb.toString()
+	}
+
 	//-----------------------------------------------------------------
-	
+
 	private List<String> readAllLines(Reader reader) {
 		return new BufferedReader(reader).lines().collect(Collectors.toList());
 	}
-	
-	
+
+
 	private void validateInputs(Path baseDir, Path text1, Path text2) throws Exception {
 		// baseDir can be null
 		if (baseDir != null) {
@@ -123,32 +149,6 @@ public class TextsDiffer {
 				return file.normalize().toString()
 			}
 		}
-	}
-	
-	private String compileReport(List<String> original, List<String> revised) {
-		// compute the difference between the two
-		DiffRowGenerator generator =
-				DiffRowGenerator.create()
-				.showInlineDiffs(true)
-				.inlineDiffByWord(true)
-				.oldTag({ f -> "*" } as Function)
-				.newTag({ f -> "**" } as Function)
-				.build();
-
-		List<DiffRow> rows = generator.generateDiffRows(original, revised);
-		List<DiffRow> insertedRows = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.INSERT}).collect(Collectors.toList());
-		List<DiffRow> deletedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.DELETE}).collect(Collectors.toList());
-		List<DiffRow> changedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.CHANGE}).collect(Collectors.toList());
-		List<DiffRow> equalRows    = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.EQUAL}).collect(Collectors.toList());
-
-		// generate a diff report in Markdown format
-		StringBuilder sb = new StringBuilder()
-		sb.append(mdDifferentOrNot(rows, equalRows))
-		sb.append("\n")
-		sb.append(mdStats(insertedRows, deletedRows, changedRows, equalRows))
-		sb.append("\n")
-		sb.append(mdDetail(rows))
-		return sb.toString()
 	}
 
 	private String mdFilePath(Path baseDir, Path text1, Path text2) {
