@@ -39,6 +39,11 @@ public class TextsDiffer {
 		this.diffFiles(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
 	}
 
+	@Keyword
+	public void diffURLs(String url1, String url2, String output) {
+		this.diffURLs(new URL(url1), new URL(url2), Paths.get(output))
+	}
+
 	public void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
 		validateInputs(baseDir, text1, text2)
 		baseDir = baseDir.toAbsolutePath()
@@ -79,6 +84,14 @@ public class TextsDiffer {
 		Reader reader1 = new InputStreamReader(is1, StandardCharsets.UTF_8)
 		Reader reader2 = new InputStreamReader(is2, StandardCharsets.UTF_8)
 		return diffReaders(reader1, reader2)
+	}
+
+	public void diffURLs(URL url1, URL url2, Path output) {
+		InputStream is1 = url1.openStream()
+		InputStream is2 = url2.openStream()
+		String report = this.diffInputStreams(is1, is2)
+		ensureParentDir(output)
+		output.toFile().text = report
 	}
 
 	public String compileReport(List<String> original, List<String> revised) {
@@ -177,11 +190,24 @@ public class TextsDiffer {
 
 	private String mdDetail(List<DiffRow> rows) {
 		StringBuilder sb = new StringBuilder()
-		sb.append("|line#|original|revised|\n")
-		sb.append("|-----|--------|-------|\n")
+		sb.append("|line#| |original|revised|\n")
+		sb.append("|-----| |--------|-------|\n")
 		rows.eachWithIndex { DiffRow row, index ->
-			sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n")
+			sb.append("|" + (index+1) + "|" + getStatus(row) + "|" + 
+				row.getOldLine() + "|" + row.getNewLine() + "|\n")
 		}
 		return sb.toString()
+	}
+	
+	private String getStatus(DiffRow dr) {
+		if (dr.getTag() == DiffRow.Tag.INSERT) {
+			return "I"
+		} else if (dr.getTag() == DiffRow.Tag.DELETE) {
+			return "D"
+		} else if (dr.getTag() == DiffRow.Tag.CHANGE) {
+			return "C"
+		} else {
+			return " "
+		}
 	}
 }
