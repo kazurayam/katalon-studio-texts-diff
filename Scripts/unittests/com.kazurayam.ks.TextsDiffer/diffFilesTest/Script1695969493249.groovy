@@ -17,7 +17,7 @@ Path doc2 = projectDir.resolve("src/test/fixtures/doc2.xml")
 Path out = outputDir.resolve("test-output.md")
 
 TextsDiffer differ = new TextsDiffer()
-differ.processFiles(projectDir, doc1, doc2, out)
+differ.diffFiles(projectDir, doc1, doc2, out)
 
 assert Files.exists(out)
 assert out.toFile().length() > 0

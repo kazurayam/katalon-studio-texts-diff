@@ -23,7 +23,7 @@ String text2 = """<doc>
 """
 
 TextsDiffer differ = new TextsDiffer()
-String md = differ.processStrings(text1, text2)
+String md = differ.diffStrings(text1, text2)
 
 assert md != null
 println md

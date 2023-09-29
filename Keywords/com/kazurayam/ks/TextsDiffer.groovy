@@ -22,24 +22,24 @@ public class TextsDiffer {
 	public TextsDiffer() {}
 
 	@Keyword
-	public void processFiles(String text1, String text2, String output) {
+	public void diffFiles(String text1, String text2, String output) {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
-		this.processFiles(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
+		this.diffFiles(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
 	}
 
 	@Keyword
-	public void processFiles(String baseDir, String text1, String text2, String output) {
+	public void diffFiles(String baseDir, String text1, String text2, String output) {
 		Objects.requireNonNull(baseDir)
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
 		Path dir = Paths.get(baseDir)
-		this.processFiles(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
+		this.diffFiles(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
 	}
 
-	public void processFiles(Path baseDir, Path text1, Path text2, Path output) {
+	public void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
 		validateInputs(baseDir, text1, text2)
 		baseDir = baseDir.toAbsolutePath()
 
@@ -60,11 +60,11 @@ public class TextsDiffer {
 	}
 
 	@Keyword
-	public String processStrings(String text1, String text2) {
-		return processReaders(new StringReader(text1), new StringReader(text2))
+	public String diffStrings(String text1, String text2) {
+		return diffReaders(new StringReader(text1), new StringReader(text2))
 	}
 
-	public String processReaders(Reader reader1, Reader reader2) {
+	public String diffReaders(Reader reader1, Reader reader2) {
 		List<String> original = readAllLines(reader1)
 		List<String> revised = readAllLines(reader2)
 
@@ -73,12 +73,12 @@ public class TextsDiffer {
 		return sb.toString()
 	}
 
-	public String processInputStreams(InputStream is1, InputStream is2) {
+	public String diffInputStreams(InputStream is1, InputStream is2) {
 		Objects.requireNonNull(is1)
 		Objects.requireNonNull(is2)
 		Reader reader1 = new InputStreamReader(is1, StandardCharsets.UTF_8)
 		Reader reader2 = new InputStreamReader(is2, StandardCharsets.UTF_8)
-		return processReaders(reader1, reader2)
+		return diffReaders(reader1, reader2)
 	}
 
 	public String compileReport(List<String> original, List<String> revised) {
