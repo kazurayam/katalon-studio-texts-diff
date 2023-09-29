@@ -6,7 +6,7 @@ import com.kazurayam.ks.TextsDiffer
 import com.kms.katalon.core.configuration.RunConfiguration
 
 /**
- * Test Cases/unittests/com.kazurayam.ks/TextsDifferTest
+ * Test Cases/unittests/com.kazurayam.ks/TextsDiffer_processFilesTest
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path outputDir = projectDir.resolve("build/tmp")
