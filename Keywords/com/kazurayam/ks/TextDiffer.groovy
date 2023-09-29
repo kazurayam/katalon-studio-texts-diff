@@ -21,24 +21,24 @@ public class TextDiffer {
 	public TextDiffer() {}
 
 	@Keyword
-	public void execute(String text1, String text2, String output) {
+	public void processFiles(String text1, String text2, String output) {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
-		this.execute(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
+		this.processFiles(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
 	}
 
 	@Keyword
-	public void execute(String baseDir, String text1, String text2, String output) {
+	public void processFiles(String baseDir, String text1, String text2, String output) {
 		Objects.requireNonNull(baseDir)
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
 		Path dir = Paths.get(baseDir)
-		this.execute(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
+		this.processFiles(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
 	}
 
-	public void execute(Path baseDir, Path text1, Path text2, Path output) {
+	public void processFiles(Path baseDir, Path text1, Path text2, Path output) {
 		validateInputs(baseDir, text1, text2)
 		baseDir = baseDir.toAbsolutePath()
 		ensureParentDir(output)
@@ -64,23 +64,13 @@ public class TextDiffer {
 
 		// generate a diff report in Markdown format
 		StringBuilder sb = new StringBuilder()
-		sb.append("- original: `${ relativize(baseDir, text1) }`\n")
-		sb.append("- revised : `${ relativize(baseDir, text2) }`\n\n")
-
-		sb.append((equalRows.size() < rows.size()) ? '**DIFFERENT**' : '**NO DIFF**')
-		sb.append("\n\n")
-
-		sb.append("- inserted rows: ${insertedRows.size()}\n")
-		sb.append("- deleted rows : ${deletedRows.size()}\n")
-		sb.append("- changed rows : ${changedRows.size()}\n")
-		sb.append("- equal rows:  : ${equalRows.size()}\n\n")
-
-		sb.append("|line#|original|revised|\n")
-		sb.append("|-----|--------|-------|\n")
-		rows.eachWithIndex { DiffRow row, index ->
-			sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n")
-		}
-
+		sb.append(mdFilePath(baseDir, text1, text2))
+		sb.append(mdDifferentOrNot(rows, equalRows))
+		sb.append("\n")
+		sb.append(mdStats(insertedRows, deletedRows, changedRows, equalRows))
+		sb.append("\n")
+		sb.append(mdDetail(rows))
+		
 		//println the diff report into the output file
 		output.toFile().text = sb.toString()
 	}
@@ -120,5 +110,39 @@ public class TextDiffer {
 				return file.normalize().toString()
 			}
 		}
+	}
+	
+	private String mdFilePath(Path baseDir, Path text1, Path text2) {
+		StringBuilder sb = new StringBuilder()
+		sb.append("- original: `${ relativize(baseDir, text1) }`\n")
+		sb.append("- revised : `${ relativize(baseDir, text2) }`\n\n")
+		return sb.toString()
+	}
+	
+	private String mdDifferentOrNot(List<DiffRow> rows, List<DiffRow> equalRows) {
+		StringBuilder sb = new StringBuilder()
+		sb.append((equalRows.size() < rows.size()) ? '**DIFFERENT**' : '**NO DIFF**')
+		sb.append("\n")
+		return sb.toString()
+	}
+	
+	private String mdStats(List<DiffRow> insertedRows, List<DiffRow> deletedRows, 
+		List<DiffRow> changedRows, List<DiffRow> equalRows) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("- inserted rows: ${insertedRows.size()}\n")
+		sb.append("- deleted rows : ${deletedRows.size()}\n")
+		sb.append("- changed rows : ${changedRows.size()}\n")
+		sb.append("- equal rows:  : ${equalRows.size()}\n")
+		return sb.toString()
+	}
+	
+	private String mdDetail(List<DiffRow> rows) {
+		StringBuilder sb = new StringBuilder()
+		sb.append("|line#|original|revised|\n")
+		sb.append("|-----|--------|-------|\n")
+		rows.eachWithIndex { DiffRow row, index ->
+			sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n")
+		}
+		return sb.toString()
 	}
 }
