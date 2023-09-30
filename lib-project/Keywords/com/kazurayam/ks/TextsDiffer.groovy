@@ -97,11 +97,16 @@ public class TextsDiffer {
 	}
 
 	public void diffURLs(URL url1, URL url2, Path output) {
+		StringBuilder sb = new StringBuilder()
+		sb.append("- original: `${ url1.toString() }`\n")
+		sb.append("- revised : `${ url2.toString() }`\n")
+		sb.append("\n")
 		InputStream is1 = url1.openStream()
 		InputStream is2 = url2.openStream()
 		String report = this.diffInputStreams(is1, is2)
+		sb.append(report)
 		ensureParentDir(output)
-		output.toFile().text = report
+		output.toFile().text = sb.toString()
 	}
 
 	public String compileReport(List<String> original, List<String> revised) {
