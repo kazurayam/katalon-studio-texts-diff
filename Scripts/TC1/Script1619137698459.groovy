@@ -8,21 +8,23 @@ import com.github.difflib.text.DiffRow
 import com.github.difflib.text.DiffRowGenerator
 import com.kms.katalon.core.configuration.RunConfiguration
 
-
+/**
+ * Test Cases/TC1
+ */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path doc1 = projectDir.resolve("Include/fixtures/doc1.xml")
-Path doc2 = projectDir.resolve("Include/fixtures/doc2.xml")
+Path doc1 = projectDir.resolve("src/test/fixtures/doc1.xml")
+Path doc2 = projectDir.resolve("src/test/fixtures/doc2.xml")
 
-//build simple lists of the lines of the two testfiles
+//build simple lists of the lines of the two text files
 List<String> original = Files.readAllLines(doc1);
 List<String> revised = Files.readAllLines(doc2);
 
 // Compute the difference between two texts and print it in humann-readable markup style
-DiffRowGenerator generator = 
+DiffRowGenerator generator =
 	DiffRowGenerator.create()
 					.showInlineDiffs(true)
 					.inlineDiffByWord(true)
-					.oldTag({ f -> "*" } as Function)
+					.oldTag({ f -> "~" } as Function)
 					.newTag({ f -> "**" } as Function)
 					.build()
 
@@ -33,10 +35,10 @@ List<DiffRow> deletedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() ==
 List<DiffRow> changedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.CHANGE}).collect(Collectors.toList())
 List<DiffRow> equalRows    = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.EQUAL}).collect(Collectors.toList())
 
-// print the diff info in Markdown format into a file out.md
+// generate a diff report in Markdown format
 StringBuilder sb = new StringBuilder()
-sb.append("- original: `${doc1}`\n")
-sb.append("- revised : `${doc2}`\n\n")
+sb.append("- original: `${projectDir.relativize(doc1)}`\n")
+sb.append("- revised : `${projectDir.relativize(doc2)}`\n\n")
 
 sb.append((equalRows.size() < rows.size()) ? '**DIFFERENT**' : '**NO DIFF**')
 sb.append("\n\n")
@@ -46,13 +48,15 @@ sb.append("- deleted rows : ${deletedRows.size()}\n")
 sb.append("- changed rows : ${changedRows.size()}\n")
 sb.append("- equal rows:  : ${equalRows.size()}\n\n")
 
-sb.append("|line#|original|revised|\n");
-sb.append("|-----|--------|-------|\n");
+sb.append("|line#|original|revised|\n")
+sb.append("|-----|--------|-------|\n")
 rows.eachWithIndex { DiffRow row, index ->
-	sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n");
+	sb.append("|" + (index+1) + "|" + row.getOldLine() + "|" + row.getNewLine() + "|\n")
 }
 
 
-//println sb.toString()
-Path out = projectDir.resolve("out.md")
+//println the diff report into the output file
+Path outputDir = projectDir.resolve("build/tmp")
+Files.createDirectories(outputDir)
+Path out = outputDir.resolve("TC1-output.md")
 out.toFile().text = sb.toString()

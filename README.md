@@ -1,13 +1,14 @@
 Utilizing java-diff-utils in Katalon Studio
 ===========================================
 
-date April, 2021
+1st release date: April, 2021
+2nd revision: Sept, 2023
 
 author kazurayam
 
 This is a small [Katalon Studio](https://www.katalon.com/) project for demonstration purpose.
 
-This project was developed with Katalon Studio v7.9.1 but is not KS-version-dependent at all.
+This project was originally developed with Katalon Studio v7.9.1 but is not KS-version-dependent at all.
 
 This project was created in order to propose a solution to the following post 
 in the Katalon Studio User Forum:
