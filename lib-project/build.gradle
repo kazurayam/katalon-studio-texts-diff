@@ -27,8 +27,8 @@ dependencies {
 sourceSets {
   main {
     groovy {
-      srcDirs = ["Keywords", "Libs"]
-      excludes = ["CustomKeywords.groovy", "Temp*.groovy"]
+      srcDirs = ["Keywords"]
+      // excludes = ["CustomKeywords.groovy", "Temp*.groovy", "internal/GlobalVariable.groovy"]
     }
   }
   test {

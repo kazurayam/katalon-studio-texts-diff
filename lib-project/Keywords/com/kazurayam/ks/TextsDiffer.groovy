@@ -69,15 +69,15 @@ public final class TextsDiffer {
 		output.toFile().text = sb.toString()
 	}
 
-	public final String diffInputStreams(InputStream is1, InputStream is2) {
+	public final String diffByteStreams(InputStream is1, InputStream is2) {
 		Objects.requireNonNull(is1)
 		Objects.requireNonNull(is2)
 		Reader reader1 = new InputStreamReader(is1, StandardCharsets.UTF_8)
 		Reader reader2 = new InputStreamReader(is2, StandardCharsets.UTF_8)
-		return diffReaders(reader1, reader2)
+		return diffCharacterStreams(reader1, reader2)
 	}
 
-	public final String diffReaders(Reader reader1, Reader reader2) {
+	public final String diffCharacterStreams(Reader reader1, Reader reader2) {
 		List<String> original = readAllLines(reader1)
 		List<String> revised = readAllLines(reader2)
 		StringBuilder sb = new StringBuilder()
@@ -87,12 +87,12 @@ public final class TextsDiffer {
 
 	@Keyword
 	public final String diffStrings(String text1, String text2) {
-		return diffReaders(new StringReader(text1), new StringReader(text2))
+		return diffCharacterStreams(new StringReader(text1), new StringReader(text2))
 	}
 
 	@Keyword
 	public final String diffStrings(String text1, String text2, String output) {
-		String md = diffReaders(new StringReader(text1), new StringReader(text2))
+		String md = diffCharacterStreams(new StringReader(text1), new StringReader(text2))
 		Path out = Paths.get(output)
 		ensureParentDir(out)
 		out.toFile().text = md
@@ -110,7 +110,7 @@ public final class TextsDiffer {
 		sb.append("\n")
 		InputStream is1 = url1.openStream()
 		InputStream is2 = url2.openStream()
-		String report = this.diffInputStreams(is1, is2)
+		String report = this.diffByteStreams(is1, is2)
 		sb.append(report)
 		ensureParentDir(output)
 		output.toFile().text = sb.toString()
