@@ -12,10 +12,20 @@ import com.github.difflib.text.DiffRowGenerator
 import com.kms.katalon.core.annotation.Keyword
 
 /**
- * Compare 2 text files, create a report which shows the diff of the 2 inputs.
- * The report is in Markdown format. 
- * 
+ * Compare 2 texts, create a report which shows the diff of the 2 inputs.
+ * The input text could be an instance of various classes: java.nio.file.Path,
+ * java.io.File, java.lang.String, java.net.URL, java.io.Reader and java.io.InputStream.
+ *
+ * This class can be used as a custom keyword in Katalon Studio.
+ *
+ * The output report is compiled in Markdown format.
+ * So you would require a Markdown viewer.
+ * For example, Visual Studio Code with Markdown:
+ *
+ * https://code.visualstudio.com/Docs/languages/markdown
+ *
  * @author kazurayam
+ * @date Sept, 2023
  */
 public class TextsDiffer {
 
