@@ -56,7 +56,7 @@ rows.eachWithIndex { DiffRow row, index ->
 
 
 //println the diff report into the output file
-Path outputDir = projectDir.resolve("build/tmp")
+Path outputDir = projectDir.resolve("build/tmp/testOutput")
 Files.createDirectories(outputDir)
 Path out = outputDir.resolve("TC1-output.md")
 out.toFile().text = sb.toString()

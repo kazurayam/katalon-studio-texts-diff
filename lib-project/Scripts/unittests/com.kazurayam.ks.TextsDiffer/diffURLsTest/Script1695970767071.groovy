@@ -9,7 +9,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
  * Test Cases/unittests/com.kazurayam.ks.TextsDiffer/diffURLsTest
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path outputDir = projectDir.resolve("build/tmp")
+Path outputDir = projectDir.resolve("build/tmp/testOutput")
 Files.createDirectories(outputDir)
 
 Path doc1 = projectDir.resolve("src/test/fixtures/doc1.xml")

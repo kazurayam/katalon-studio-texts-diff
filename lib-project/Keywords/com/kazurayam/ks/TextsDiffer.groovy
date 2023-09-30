@@ -27,12 +27,12 @@ import com.kms.katalon.core.annotation.Keyword
  * @author kazurayam
  * @date Sept, 2023
  */
-public class TextsDiffer {
+public final class TextsDiffer {
 
 	public TextsDiffer() {}
 
 	@Keyword
-	public void diffFiles(String text1, String text2, String output) {
+	public final void diffFiles(String text1, String text2, String output) {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
@@ -40,7 +40,7 @@ public class TextsDiffer {
 	}
 
 	@Keyword
-	public void diffFiles(String baseDir, String text1, String text2, String output) {
+	public final void diffFiles(String baseDir, String text1, String text2, String output) {
 		Objects.requireNonNull(baseDir)
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
@@ -49,12 +49,7 @@ public class TextsDiffer {
 		this.diffFiles(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
 	}
 
-	@Keyword
-	public void diffURLs(String url1, String url2, String output) {
-		this.diffURLs(new URL(url1), new URL(url2), Paths.get(output))
-	}
-
-	public void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
+	public final void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
 		validateInputs(baseDir, text1, text2)
 		baseDir = baseDir.toAbsolutePath()
 
@@ -74,21 +69,7 @@ public class TextsDiffer {
 		output.toFile().text = sb.toString()
 	}
 
-	@Keyword
-	public String diffStrings(String text1, String text2) {
-		return diffReaders(new StringReader(text1), new StringReader(text2))
-	}
-
-	public String diffReaders(Reader reader1, Reader reader2) {
-		List<String> original = readAllLines(reader1)
-		List<String> revised = readAllLines(reader2)
-
-		StringBuilder sb = new StringBuilder()
-		sb.append(compileReport(original, revised))
-		return sb.toString()
-	}
-
-	public String diffInputStreams(InputStream is1, InputStream is2) {
+	public final String diffInputStreams(InputStream is1, InputStream is2) {
 		Objects.requireNonNull(is1)
 		Objects.requireNonNull(is2)
 		Reader reader1 = new InputStreamReader(is1, StandardCharsets.UTF_8)
@@ -96,7 +77,33 @@ public class TextsDiffer {
 		return diffReaders(reader1, reader2)
 	}
 
-	public void diffURLs(URL url1, URL url2, Path output) {
+	public final String diffReaders(Reader reader1, Reader reader2) {
+		List<String> original = readAllLines(reader1)
+		List<String> revised = readAllLines(reader2)
+		StringBuilder sb = new StringBuilder()
+		sb.append(compileReport(original, revised))
+		return sb.toString()
+	}
+
+	@Keyword
+	public final String diffStrings(String text1, String text2) {
+		return diffReaders(new StringReader(text1), new StringReader(text2))
+	}
+
+	@Keyword
+	public final String diffStrings(String text1, String text2, String output) {
+		String md = diffReaders(new StringReader(text1), new StringReader(text2))
+		Path out = Paths.get(output)
+		ensureParentDir(out)
+		out.toFile().text = md
+	}
+
+	@Keyword
+	public final void diffURLs(String url1, String url2, String output) {
+		this.diffURLs(new URL(url1), new URL(url2), Paths.get(output))
+	}
+
+	public final void diffURLs(URL url1, URL url2, Path output) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("- original: `${ url1.toString() }`\n")
 		sb.append("- revised : `${ url2.toString() }`\n")
@@ -109,7 +116,7 @@ public class TextsDiffer {
 		output.toFile().text = sb.toString()
 	}
 
-	public String compileReport(List<String> original, List<String> revised) {
+	public final String compileReport(List<String> original, List<String> revised) {
 		// compute the difference between the two
 		DiffRowGenerator generator =
 				DiffRowGenerator.create()
@@ -168,14 +175,10 @@ public class TextsDiffer {
 
 	private String relativize(Path baseDir, Path file) {
 		assert baseDir.isAbsolute()
-		if (file.isAbsolute()) {
+		try {
+			return baseDir.relativize(file).normalize().toString()
+		} catch (Exception e) {
 			return file.normalize().toString()
-		} else {
-			try {
-				return baseDir.relativize(file).normalize().toString()
-			} catch (Exception e) {
-				return file.normalize().toString()
-			}
 		}
 	}
 

@@ -25,4 +25,11 @@
       <testCaseId>Test Cases/unittests/com.kazurayam.ks.TextsDiffer/diffStringsTest</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
+   <testCaseLink>
+      <guid>8d9c481e-2bdf-4e0f-9105-1f50b6d2be4e</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/unittests/com.kazurayam.ks.TextsDiffer/diffURLsTest</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
 </TestSuiteEntity>
