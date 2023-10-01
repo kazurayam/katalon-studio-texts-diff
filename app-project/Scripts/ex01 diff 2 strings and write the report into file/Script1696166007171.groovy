@@ -26,7 +26,7 @@ String text2 = """<doc>
 </doc>
 """
 
-// take diff of 2 String, write the report into file
+// take diff of 2 Strings, write the diff report into a file
 String outpath = "build/tmp/testoutput/ex01-output.md"
 CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2, outpath)
 
