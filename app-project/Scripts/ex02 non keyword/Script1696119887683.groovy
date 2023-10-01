@@ -1,7 +1,7 @@
 import com.kazurayam.ks.TextsDiffer
 
 /**
- * ex1 diff 2 strings and print to console
+ * ex02 call the TextsDiffer class directly, not as a custom Keyword
  */
 
 String text1 = """<doc>

@@ -1,7 +1,7 @@
 import com.kazurayam.ks.TextsDiffer
 
 /**
- * ex1 diff 2 strings and print to console
+ * ex01 diff 2 strings and print the report to console
  */
 
 String text1 = """<doc>
