@@ -49,11 +49,19 @@ public final class TextsDiffer {
 		this.diffFiles(dir, Paths.get(text1), Paths.get(text2), Paths.get(output))
 	}
 
+	public final void diffFiles(Path text1, Path text2, Path output) {
+		this.diffFiles(Paths.get("."),
+			text1, text2, output)
+	}
+
 	public final void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
+		baseDir = baseDir.toAbsolutePath()
 		Path t1 = baseDir.resolve(text1)
+		// here is a small trick which you may not be aware of
+		// if the text1 is relative, then t1 will be an absolute path based on the baseDir + text1
+		// if the text1 is absolute, then t1 will just the same as text1
 		Path t2 = baseDir.resolve(text2)
 		validateInputs(baseDir, t1, t2)
-		baseDir = baseDir.toAbsolutePath()
 
 		//read all lines of the two text files
 		List<String> original = Files.readAllLines(t1)
