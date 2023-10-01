@@ -46,16 +46,18 @@ public final class TextsDiffer {
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
 		Path dir = Paths.get(baseDir)
-		this.diffFiles(dir, dir.resolve(text1), dir.resolve(text2), dir.resolve(output))
+		this.diffFiles(dir, Paths.get(text1), Paths.get(text2), Paths.get(output))
 	}
 
 	public final void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
-		validateInputs(baseDir, text1, text2)
+		Path t1 = baseDir.resolve(text1)
+		Path t2 = baseDir.resolve(text2)
+		validateInputs(baseDir, t1, t2)
 		baseDir = baseDir.toAbsolutePath()
 
 		//read all lines of the two text files
-		List<String> original = Files.readAllLines(text1)
-		List<String> revised = Files.readAllLines(text2)
+		List<String> original = Files.readAllLines(t1)
+		List<String> revised = Files.readAllLines(t2)
 
 		StringBuilder sb = new StringBuilder()
 
@@ -175,10 +177,14 @@ public final class TextsDiffer {
 
 	private String relativize(Path baseDir, Path file) {
 		assert baseDir.isAbsolute()
-		try {
-			return baseDir.relativize(file).normalize().toString()
-		} catch (Exception e) {
+		if (file.isAbsolute()) {
 			return file.normalize().toString()
+		} else {
+			try {
+				return baseDir.relativize(file).normalize().toString()
+			} catch (Exception e) {
+				return file.normalize().toString()
+			}
 		}
 	}
 
