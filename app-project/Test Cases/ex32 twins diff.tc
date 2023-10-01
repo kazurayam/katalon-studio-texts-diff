@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ex31 download URL into file, do it twice, then diff</name>
+   <name>ex32 twins diff</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>ba6cea16-7478-48f6-9db4-12e54dfafc83</testCaseGuid>
+   <testCaseGuid>bff3b920-94cc-434f-a98f-59f2cc5999f5</testCaseGuid>
 </TestCaseEntity>

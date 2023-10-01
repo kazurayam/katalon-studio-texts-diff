@@ -4,12 +4,16 @@ import java.nio.channels.ReadableByteChannel
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import com.kms.katalon.core.configuration.RunConfiguration
+
 import com.kazurayam.ks.TextsDiffer
+import com.kms.katalon.core.configuration.RunConfiguration
+
 import groovy.json.JsonOutput
 
 /**
- * ex31 download URL into file, do it twice, the diff the 2 files
+ * ex31 chronos diff
+ * 
+ * download JSON from a URL into file, do it twice, then diff
  */
 
 def downloadURL(URL url, File output) {
@@ -28,23 +32,23 @@ def prettyPrintJson(Path json) {
 URL url = new URL("http://worldtimeapi.org/api/ip")
 
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Files.createDirectories(projectDir.resolve("build/tmp/ex31"))
-Path text1 = Paths.get("build/tmp/ex31/text1.json")
-Path text2 = Paths.get("build/tmp/ex31/text2.json")
+Files.createDirectories(projectDir.resolve("build/tmp/testOutput/ex31"))
+Path text1 = Paths.get("build/tmp/testOutput/ex31/text1.json")
+Path text2 = Paths.get("build/tmp/testOutput/ex31/text2.json")
 
-// 1st download the content of the URL 
+// 1st download a JSON from the URL 
 downloadURL(url, text1.toFile())
 prettyPrintJson(text1)
 
-// wait for a few seconds
+// Intermission
 Thread.sleep(3000)
 
-// 2nd download the same URL
+// 2nd download a JSON from the same URL
 downloadURL(url, text2.toFile())
 prettyPrintJson(text2)
 
 // then diff the 2 texts
 TextsDiffer differ = new TextsDiffer()
-Path out = projectDir.resolve("build/tmp/ex31/diff.md")
+Path out = projectDir.resolve("build/tmp/testOutput/ex31/diff.md")
 
 differ.diffFiles(text1, text2, out)

@@ -51,7 +51,7 @@ public final class TextsDiffer {
 
 	public final void diffFiles(Path text1, Path text2, Path output) {
 		this.diffFiles(Paths.get("."),
-			text1, text2, output)
+				text1, text2, output)
 	}
 
 	public final void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
