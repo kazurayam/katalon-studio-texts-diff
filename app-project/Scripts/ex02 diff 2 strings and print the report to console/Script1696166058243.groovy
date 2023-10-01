@@ -1,7 +1,7 @@
 import com.kazurayam.ks.TextsDiffer
 
 /**
- * ex02 call the TextsDiffer class directly, not as a custom Keyword
+ * ex02 diff 2 strings and print the report to console
  */
 
 String text1 = """<doc>
@@ -25,7 +25,6 @@ String text2 = """<doc>
 """
 
 // pass 2 arguments of String to receive a String as report
-TextsDiffer differ = new TextsDiffer()
-String md = differ.diffStrings(text1, text2)
+String md = CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2)
 println md
 

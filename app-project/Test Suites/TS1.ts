@@ -22,21 +22,21 @@
       <guid>d3c3d815-4164-4a0c-be45-3c6208480fe5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/ex01 diff 2 strings and print the report to console</testCaseId>
+      <testCaseId>Test Cases/ex02 diff 2 strings and print the report to console</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>0924ca08-8b1e-4697-a102-a80fc130bf1e</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/ex02 non keyword</testCaseId>
+      <testCaseId>Test Cases/ex03 non keyword</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>37c1d9cb-adb7-4c2c-9c7e-d606d642f1df</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/ex03 diff 2 strings and write the report into file</testCaseId>
+      <testCaseId>Test Cases/ex01 diff 2 strings and write the report into file</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

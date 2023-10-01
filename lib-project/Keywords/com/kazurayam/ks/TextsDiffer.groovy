@@ -10,6 +10,7 @@ import java.util.stream.Collectors
 import com.github.difflib.text.DiffRow
 import com.github.difflib.text.DiffRowGenerator
 import com.kms.katalon.core.annotation.Keyword
+import groovy.json.JsonOutput
 
 /**
  * Compare 2 texts, create a report which shows the diff of the 2 inputs.
@@ -90,14 +91,14 @@ public final class TextsDiffer {
 	public final String diffCharacterStreams(Reader reader1, Reader reader2) {
 		List<String> original = readAllLines(reader1)
 		List<String> revised = readAllLines(reader2)
-		StringBuilder sb = new StringBuilder()
-		sb.append(compileMarkdownReport(original, revised))
-		return sb.toString()
+		return compileMarkdownReport(original, revised)
 	}
 
 	@Keyword
 	public final String diffStrings(String text1, String text2) {
-		return diffCharacterStreams(new StringReader(text1), new StringReader(text2))
+		List<String> original = readAllLines(new StringReader(text1))
+		List<String> revised = readAllLines(new StringReader(text2))
+		return compileJsonReport(original, revised)
 	}
 
 	@Keyword
@@ -143,6 +144,9 @@ public final class TextsDiffer {
 		// compute the difference between the two
 		DiffInfo diffInfo = new DiffInfo(original, revised)
 		// generate a diff report in JSON format
+		StringBuilder sb = new StringBuilder()
+		sb.append(diffInfo.jsReport())
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	//-----------------------------------------------------------------
@@ -196,54 +200,7 @@ public final class TextsDiffer {
 		return sb.toString()
 	}
 
-	/*
-	private String mdDifferentOrNot(DiffInfo diffInfo) {
-		StringBuilder sb = new StringBuilder()
-		sb.append((diffInfo.getEqualRows().size() < diffInfo.getRows().size()) ?
-				'**DIFFERENT**' : '**NO DIFF**')
-		sb.append("\n")
-		return sb.toString()
-	}
-	*/
-	/*
-	private String mdStats(DiffInfo diffInfo) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("- inserted rows: ${diffInfo.getInsertedRows().size()}\n")
-		sb.append("- deleted rows : ${diffInfo.getDeletedRows().size()}\n")
-		sb.append("- changed rows : ${diffInfo.getChangedRows().size()}\n")
-		sb.append("- equal rows:  : ${diffInfo.getEqualRows().size()}\n")
-		return sb.toString()
-	}
-	*/
-	/*
-	private String mdDetail(DiffInfo diffInfo) {
-		StringBuilder sb = new StringBuilder()
-		sb.append("|line#|S|original|revised|\n")
-		sb.append("|-----|-|--------|-------|\n")
-		diffInfo.getRows().eachWithIndex { DiffRow row, index ->
-			sb.append("|" + (index+1) + "|" + getStatus(row) + "|" +
-					row.getOldLine() + "|" + row.getNewLine() + "|\n")
-		}
-		return sb.toString()
-	}
-	*/
-	/*
-	private String getStatus(DiffRow dr) {
-		if (dr.getTag() == DiffRow.Tag.INSERT) {
-			return "I"
-		} else if (dr.getTag() == DiffRow.Tag.DELETE) {
-			return "D"
-		} else if (dr.getTag() == DiffRow.Tag.CHANGE) {
-			return "C"
-		} else {
-			return " "
-		}
-	}
-	*/
-	private static String TAG_INSERTED_COLOR = "#e6ffec";
-	private static String TAG_DELETED_COLOR  = "#ffeef0";
-	private static String TAG_CHANGED_COLOR  = "#dbedff";
-
+	
 
 
 
@@ -256,6 +213,11 @@ public final class TextsDiffer {
 		private List<DiffRow> deletedRows
 		private List<DiffRow> changedRows
 		private List<DiffRow> equalRows
+		
+		private static String TAG_INSERTED_COLOR = "#e6ffec";
+		private static String TAG_DELETED_COLOR  = "#ffeef0";
+		private static String TAG_CHANGED_COLOR  = "#dbedff";
+	
 		DiffInfo(List<String> original, List<String> revised) {
 			// compute the difference between the two
 			DiffRowGenerator generator =
@@ -330,6 +292,19 @@ public final class TextsDiffer {
 			} else {
 				return " "
 			}
+		}
+		
+		String jsReport() {
+			StringBuilder sb = new StringBuilder()
+			sb.append("{")
+			sb.append("\"rows\":${this.getRows().size()},")
+			sb.append("\"isDifferent\":${this.getEqualRows().size() < this.getRows().size()},")
+			sb.append("\"insertedRows\":${this.getInsertedRows().size()},")
+			sb.append("\"deletedRows\":${this.getDeletedRows().size()},")
+			sb.append("\"changedRows\":${this.getChangedRows().size()},")
+			sb.append("\"equalRows\":${this.getEqualRows().size()}")
+			sb.append("}")
+			return JsonOutput.prettyPrint(sb.toString())
 		}
 	}
 }
