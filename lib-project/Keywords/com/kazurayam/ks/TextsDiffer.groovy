@@ -128,27 +128,14 @@ public final class TextsDiffer {
 
 	public final String compileReport(List<String> original, List<String> revised) {
 		// compute the difference between the two
-		DiffRowGenerator generator =
-				DiffRowGenerator.create()
-				.showInlineDiffs(true)
-				.inlineDiffByWord(true)
-				.oldTag({ f -> f ? "<span style=\"color:red; font-weight:bold; background-color:#ffeef0\">" : "</span>" } as Function)
-				.newTag({ f -> f ? "<span style=\"color:green; font-weight:bold; background-color:#e6ffec\">" : "</span>" } as Function)
-				.build();
-
-		List<DiffRow> rows = generator.generateDiffRows(original, revised);
-		List<DiffRow> insertedRows = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.INSERT}).collect(Collectors.toList());
-		List<DiffRow> deletedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.DELETE}).collect(Collectors.toList());
-		List<DiffRow> changedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.CHANGE}).collect(Collectors.toList());
-		List<DiffRow> equalRows    = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.EQUAL}).collect(Collectors.toList());
-
+		DiffInfo diffInfo = new DiffInfo(original, revised)
 		// generate a diff report in Markdown format
 		StringBuilder sb = new StringBuilder()
-		sb.append(mdDifferentOrNot(rows, equalRows))
+		sb.append(mdDifferentOrNot(diffInfo))
 		sb.append("\n")
-		sb.append(mdStats(insertedRows, deletedRows, changedRows, equalRows))
+		sb.append(mdStats(diffInfo))
 		sb.append("\n")
-		sb.append(mdDetail(rows))
+		sb.append(mdDetail(diffInfo))
 		return sb.toString()
 	}
 
@@ -203,28 +190,28 @@ public final class TextsDiffer {
 		return sb.toString()
 	}
 
-	private String mdDifferentOrNot(List<DiffRow> rows, List<DiffRow> equalRows) {
+	private String mdDifferentOrNot(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder()
-		sb.append((equalRows.size() < rows.size()) ? '**DIFFERENT**' : '**NO DIFF**')
+		sb.append((diffInfo.getEqualRows().size() < diffInfo.getRows().size()) ? 
+			'**DIFFERENT**' : '**NO DIFF**')
 		sb.append("\n")
 		return sb.toString()
 	}
 
-	private String mdStats(List<DiffRow> insertedRows, List<DiffRow> deletedRows,
-			List<DiffRow> changedRows, List<DiffRow> equalRows) {
+	private String mdStats(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("- inserted rows: ${insertedRows.size()}\n")
-		sb.append("- deleted rows : ${deletedRows.size()}\n")
-		sb.append("- changed rows : ${changedRows.size()}\n")
-		sb.append("- equal rows:  : ${equalRows.size()}\n")
+		sb.append("- inserted rows: ${diffInfo.getInsertedRows().size()}\n")
+		sb.append("- deleted rows : ${diffInfo.getDeletedRows().size()}\n")
+		sb.append("- changed rows : ${diffInfo.getChangedRows().size()}\n")
+		sb.append("- equal rows:  : ${diffInfo.getEqualRows().size()}\n")
 		return sb.toString()
 	}
 
-	private String mdDetail(List<DiffRow> rows) {
+	private String mdDetail(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("|line#|S|original|revised|\n")
 		sb.append("|-----|-|--------|-------|\n")
-		rows.eachWithIndex { DiffRow row, index ->
+		diffInfo.getRows().eachWithIndex { DiffRow row, index ->
 			sb.append("|" + (index+1) + "|" + getStatus(row) + "|" +
 					row.getOldLine() + "|" + row.getNewLine() + "|\n")
 		}
@@ -246,5 +233,54 @@ public final class TextsDiffer {
 	private static String TAG_INSERTED_COLOR = "#e6ffec";
 	private static String TAG_DELETED_COLOR  = "#ffeef0";
 	private static String TAG_CHANGED_COLOR  = "#dbedff";
+	
+	
+	
+	
+	/**
+	 * 
+	 */
+	static class DiffInfo {
+		private List<DiffRow> rows
+		private List<DiffRow> insertedRows
+		private List<DiffRow> deletedRows
+		private List<DiffRow> changedRows
+		private List<DiffRow> equalRows
+		DiffInfo(List<String> original, List<String> revised) {
+			// compute the difference between the two
+			DiffRowGenerator generator =
+					DiffRowGenerator.create()
+					.showInlineDiffs(true)
+					.inlineDiffByWord(true)
+					.oldTag({ f -> f ? "<span style=\"color:red; font-weight:bold; background-color:#ffeef0\">" : "</span>" } as Function)
+					.newTag({ f -> f ? "<span style=\"color:green; font-weight:bold; background-color:#e6ffec\">" : "</span>" } as Function)
+					.build();
+			rows         = generator.generateDiffRows(original, revised);
+			insertedRows = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.INSERT}).collect(Collectors.toList());
+			deletedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.DELETE}).collect(Collectors.toList());
+			changedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.CHANGE}).collect(Collectors.toList());
+			equalRows    = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.EQUAL}).collect(Collectors.toList());
+		}
+		
+		List<DiffRow> getRows() {
+			return rows
+		}
+		
+		List<DiffRow> getInsertedRows() {
+			return insertedRows
+		}
+		
+		List<DiffRow> getDeletedRows() {
+			return deletedRows
+		}
+		
+		List<DiffRow> getChangedRows() {
+			return changedRows
+		}
+		
+		List<DiffRow> getEqualRows() {
+			return equalRows
+		}
+	}
 
 }
