@@ -72,7 +72,7 @@ public final class TextsDiffer {
 		// compile the diff report with the file path information
 		sb.append(mdFilePath(baseDir, text1, text2))
 		sb.append("\n")
-		sb.append(compileReport(original, revised))
+		sb.append(compileMarkdownReport(original, revised))
 
 		//println the diff report into the output file
 		ensureParentDir(output)
@@ -91,7 +91,7 @@ public final class TextsDiffer {
 		List<String> original = readAllLines(reader1)
 		List<String> revised = readAllLines(reader2)
 		StringBuilder sb = new StringBuilder()
-		sb.append(compileReport(original, revised))
+		sb.append(compileMarkdownReport(original, revised))
 		return sb.toString()
 	}
 
@@ -126,7 +126,7 @@ public final class TextsDiffer {
 		output.toFile().text = sb.toString()
 	}
 
-	public final String compileReport(List<String> original, List<String> revised) {
+	public final String compileMarkdownReport(List<String> original, List<String> revised) {
 		// compute the difference between the two
 		DiffInfo diffInfo = new DiffInfo(original, revised)
 		// generate a diff report in Markdown format
@@ -192,8 +192,8 @@ public final class TextsDiffer {
 
 	private String mdDifferentOrNot(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder()
-		sb.append((diffInfo.getEqualRows().size() < diffInfo.getRows().size()) ? 
-			'**DIFFERENT**' : '**NO DIFF**')
+		sb.append((diffInfo.getEqualRows().size() < diffInfo.getRows().size()) ?
+				'**DIFFERENT**' : '**NO DIFF**')
 		sb.append("\n")
 		return sb.toString()
 	}
@@ -233,10 +233,10 @@ public final class TextsDiffer {
 	private static String TAG_INSERTED_COLOR = "#e6ffec";
 	private static String TAG_DELETED_COLOR  = "#ffeef0";
 	private static String TAG_CHANGED_COLOR  = "#dbedff";
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * 
 	 */
@@ -261,23 +261,23 @@ public final class TextsDiffer {
 			changedRows  = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.CHANGE}).collect(Collectors.toList());
 			equalRows    = rows.stream().filter({ DiffRow dr -> dr.getTag() == DiffRow.Tag.EQUAL}).collect(Collectors.toList());
 		}
-		
+
 		List<DiffRow> getRows() {
 			return rows
 		}
-		
+
 		List<DiffRow> getInsertedRows() {
 			return insertedRows
 		}
-		
+
 		List<DiffRow> getDeletedRows() {
 			return deletedRows
 		}
-		
+
 		List<DiffRow> getChangedRows() {
 			return changedRows
 		}
-		
+
 		List<DiffRow> getEqualRows() {
 			return equalRows
 		}
