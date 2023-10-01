@@ -131,12 +131,18 @@ public final class TextsDiffer {
 		DiffInfo diffInfo = new DiffInfo(original, revised)
 		// generate a diff report in Markdown format
 		StringBuilder sb = new StringBuilder()
-		sb.append(mdDifferentOrNot(diffInfo))
+		sb.append(diffInfo.mdDifferentOrNot())
 		sb.append("\n")
-		sb.append(mdStats(diffInfo))
+		sb.append(diffInfo.mdStats())
 		sb.append("\n")
-		sb.append(mdDetail(diffInfo))
+		sb.append(diffInfo.mdDetail())
 		return sb.toString()
+	}
+	
+	public final String compileJsonReport(List<String> original, List<String> revised) {
+		// compute the difference between the two
+		DiffInfo diffInfo = new DiffInfo(original, revised)
+		// generate a diff report in JSON format
 	}
 
 	//-----------------------------------------------------------------
@@ -190,6 +196,7 @@ public final class TextsDiffer {
 		return sb.toString()
 	}
 
+	/*
 	private String mdDifferentOrNot(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder()
 		sb.append((diffInfo.getEqualRows().size() < diffInfo.getRows().size()) ?
@@ -197,7 +204,8 @@ public final class TextsDiffer {
 		sb.append("\n")
 		return sb.toString()
 	}
-
+	*/
+	/*
 	private String mdStats(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("- inserted rows: ${diffInfo.getInsertedRows().size()}\n")
@@ -206,7 +214,8 @@ public final class TextsDiffer {
 		sb.append("- equal rows:  : ${diffInfo.getEqualRows().size()}\n")
 		return sb.toString()
 	}
-
+	*/
+	/*
 	private String mdDetail(DiffInfo diffInfo) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("|line#|S|original|revised|\n")
@@ -217,7 +226,8 @@ public final class TextsDiffer {
 		}
 		return sb.toString()
 	}
-
+	*/
+	/*
 	private String getStatus(DiffRow dr) {
 		if (dr.getTag() == DiffRow.Tag.INSERT) {
 			return "I"
@@ -229,7 +239,7 @@ public final class TextsDiffer {
 			return " "
 		}
 	}
-
+	*/
 	private static String TAG_INSERTED_COLOR = "#e6ffec";
 	private static String TAG_DELETED_COLOR  = "#ffeef0";
 	private static String TAG_CHANGED_COLOR  = "#dbedff";
@@ -281,6 +291,45 @@ public final class TextsDiffer {
 		List<DiffRow> getEqualRows() {
 			return equalRows
 		}
+		
+		String mdDifferentOrNot() {
+			StringBuilder sb = new StringBuilder()
+			sb.append((this.getEqualRows().size() < this.getRows().size()) ?
+				'**DIFFERENT**' : '**NO DIFF**')
+			sb.append("\n")
+			return sb.toString()
+		}
+		
+		String mdStats() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("- inserted rows: ${this.getInsertedRows().size()}\n")
+			sb.append("- deleted rows : ${this.getDeletedRows().size()}\n")
+			sb.append("- changed rows : ${this.getChangedRows().size()}\n")
+			sb.append("- equal rows:  : ${this.getEqualRows().size()}\n")
+			return sb.toString()
+		}
+	
+		String mdDetail() {
+			StringBuilder sb = new StringBuilder()
+			sb.append("|line#|S|original|revised|\n")
+			sb.append("|-----|-|--------|-------|\n")
+			this.getRows().eachWithIndex { DiffRow row, index ->
+				sb.append("|" + (index+1) + "|" + getStatus(row) + "|" +
+						row.getOldLine() + "|" + row.getNewLine() + "|\n")
+			}
+			return sb.toString()
+		}
+		
+		private String getStatus(DiffRow dr) {
+			if (dr.getTag() == DiffRow.Tag.INSERT) {
+				return "I"
+			} else if (dr.getTag() == DiffRow.Tag.DELETE) {
+				return "D"
+			} else if (dr.getTag() == DiffRow.Tag.CHANGE) {
+				return "C"
+			} else {
+				return " "
+			}
+		}
 	}
-
 }
