@@ -26,6 +26,8 @@ If you are going to use the custom Keyword in your own Katalon project, you want
 
 In the `Drivers` directory of your Katalon project, you NEED to install 2 external jar files.
 
+![Library Management](./docs/images/LibraryManagement.png)
+
 1. [`java-diff-utils-4.12.jar`](https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils/4.12)
 2. [`katalon-studio-texts-diff-x.x.x.jar`](https://github.com/kazurayam/katalon-studio-texts-diff/releases)
 

@@ -1,6 +1,6 @@
 == ex31 chronos diff
 
-In some cases, we want to perform a work procedure as follows. We have a single web application, a single environment, a single host name to test.
+In some cases, we want to perform a work procedure as follows. We have a single web application, a single environment, a single host name to test. So we would do the following work procedure:
 
 1. Download web resources from the web app, save it into a local file
 2. Have some intermission (hours, minutes, seconds, ... undetermined)
@@ -35,7 +35,7 @@ include::./out/ex31/text2.json[]
 include::./out/ex31/diff.md[]
 ----
 
-The `diff.md` file could be previews as follows:
+The `diff.md` file could be previewed as follows:
 
 image:./images/ex31.png[]
 
