@@ -121,7 +121,7 @@ When I run it, this script emits the following JSON in the console. You would ne
         "equalRows": 5
     }
 
-You can quickly parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.
+With this JSON, you can quickly find if the 2 input texts or different or not. You can parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.
 == ex03 diff 2 strings and print the stats to console - as Plain Old Class
 == ex11 diff 2 files with relative paths to the current working directory
 == ex12 diff 2 files with relative paths to the specified base directory

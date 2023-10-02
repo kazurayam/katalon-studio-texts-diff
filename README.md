@@ -68,7 +68,6 @@ String text2 = """<doc>
 </doc>
 """
 
-report into a file
 String outpath = "build/tmp/testoutput/ex01-output.md"
 
 // take diff of 2 Strings, write the diff
@@ -79,7 +78,7 @@ assert Files.exists(out)
 assert out.toFile().length() > 0
 ```
 
-Now you want to run it.
+Now you can run it as a usual Katalon Test Case by clicking the green button ![run](./docs/images/run_katalon_test.png).
 
 Once done, the script will create a diff report in Markdown format, save it into a file `build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
 
