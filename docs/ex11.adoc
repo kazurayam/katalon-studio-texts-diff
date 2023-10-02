@@ -1,1 +1,26 @@
 == ex11 diff 2 files with relative paths to the current working directory
+
+Let me assume there are 2 files:
+
+- `src/test/fixtures/doc1.xml`
+[source,xml]
+----
+include::../app-project/src/test/fixtures/doc1.xml[]
+----
+
+- `src/test/fixtures/doc2.xml``
+[source,xml]
+----
+include::../app-project/src/test/fixtures/doc2.xml[]
+----
+
+You can write a Test Case script which compares the 2 files and writes a diff report into a file.
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex11 diff 2 files with relative paths to the current working directory/Script1696121823866.groovy[]
+----
+
+In this example, the path is written as a relative path. The `TextsDiffer` interpretes the relative paths are relative to the current working directory.
+
+The `ex11` code is rather fragile as it depends on the current working directory (*CWD* for short). When you run a Test Case in Katalon Studio GUI, the *CWD* will be always equal to the project's root directory. However when you run a Test Case in Katalon Runtime Engine in the OS command line environment, the *CWD* is variable. The *CWD* depends how you write the shell script that calls the `katalonc` command. Therefore the `ex11` script would run fine in Katalon Studio but it may fail in Katalon Runtime Engine.

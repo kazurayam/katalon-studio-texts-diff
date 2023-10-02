@@ -7,5 +7,5 @@ The `com.kazurayam.ks.TextsDiff` is a plain old Groovy class. You can call it di
 include::../app-project/Scripts/ex03 non keyword/Script1696166068782.groovy[]
 ----
 
-This script does not use `CustomKeywords.'fully qualified class name.methodName'(args)` syntax. This script does the same processing as the `ex02`
+This script does not use `CustomKeywords.'fully qualified class name.methodName'(args)` syntax. This script does the same processing as the `ex02`.
 

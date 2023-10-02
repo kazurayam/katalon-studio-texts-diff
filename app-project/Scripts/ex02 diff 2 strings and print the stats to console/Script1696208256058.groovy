@@ -28,9 +28,9 @@ String text2 = """<doc>
 String json = CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2)
 println json
 
+// parse the returned JSON, read the content to make assertions
 JsonSlurper slurper = new JsonSlurper()
 def object = slurper.parseText(json)
-
 assert object instanceof Map
 assert object.isDifferent == true
 assert object.changedRows == 2

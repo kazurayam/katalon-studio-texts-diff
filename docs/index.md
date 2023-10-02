@@ -194,9 +194,52 @@ The `com.kazurayam.ks.TextsDiff` is a plain old Groovy class. You can call it di
     String md = differ.diffStrings(text1, text2)
     println md
 
-This script does not use `CustomKeywords.'fully qualified class name.methodName'(args)` syntax. This script does the same processing as the `ex02`
+This script does not use `CustomKeywords.'fully qualified class name.methodName'(args)` syntax. This script does the same processing as the `ex02`.
 
 ## ex11 diff 2 files with relative paths to the current working directory
+
+Let me assume there are 2 files:
+
+-   `src/test/fixtures/doc1.xml`
+
+<!-- -->
+
+    <doc>
+    <body>
+    <section>
+    <p>Hello, John!</p>
+    </section>
+    <p></p>
+    </body>
+    </doc>
+
+-   `` src/test/fixtures/doc2.xml` ``
+
+<!-- -->
+
+    <doc>
+    <body>
+    <section id="main">
+    <p>Hello, Paul!</p>
+    <p>Have a break!</p>
+    </section>
+    </body>
+    </doc>
+
+You can write a Test Case script which compares the 2 files and writes a diff report into a file.
+
+    /**
+     * ex11 diff 2 files with relative paths to the current working directory
+     */
+
+    CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffFiles'(
+        "src/test/fixtures/doc1.xml",
+        "src/test/fixtures/doc2.xml",
+        "build/tmp/testOutput/ex11-output.md")
+
+In this example, the path is written as a relative path. The `TextsDiffer` interpretes the relative paths are relative to the current working directory.
+
+The `ex11` code is rather fragile as it depends on the current working directory (**CWD** for short). When you run a Test Case in Katalon Studio GUI, the **CWD** will be always equal to the project’s root directory. However when you run a Test Case in Katalon Runtime Engine in the OS command line environment, the **CWD** is variable. The **CWD** depends how you write the shell script that calls the `katalonc` command. Therefore the `ex11` script would run fine in Katalon Studio but it may fail in Katalon Runtime Engine.
 
 ## ex12 diff 2 files with relative paths to the specified base directory
 
