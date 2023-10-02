@@ -1,0 +1,16 @@
+= Examples
+
+- date October, 2023
+- author kazurayam
+
+This page shows examples of using com.kazurayam.ks.TextsDiffer class in Katalon Studio.
+
+include::ex01.adoc[]
+include::ex02.adoc[]
+include::ex03.adoc[]
+include::ex11.adoc[]
+include::ex12.adoc[]
+include::ex13.adoc[]
+include::ex21.adoc[]
+include::ex31.adoc[]
+include::ex32.adoc[]

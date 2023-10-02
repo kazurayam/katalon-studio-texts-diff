@@ -22,7 +22,7 @@
       <guid>d3c3d815-4164-4a0c-be45-3c6208480fe5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/ex02 diff 2 strings and print the report to console</testCaseId>
+      <testCaseId>Test Cases/ex02 diff 2 strings and print the stats to console</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

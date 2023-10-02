@@ -1,0 +1,29 @@
+== ex02 diff 2 strings and print the stats to console
+
+The following script does
+
+
+1. The following script calls `TextsDiffer.diffString(String,String)`.
+2. The 1st and 2nd arguments are regarded as input text. The inputs contain XML texts which are similar but different in detail.
+3. `TextsDiffer.diffString(String,String)` with 2 arguments will return a String value.
+4. The returned String will be a short JSON text, which contains the statistical information of the diff report.
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex02 diff 2 strings and print the stats to console/Script1696208256058.groovy[]
+----
+
+When I run it, this script emits the following JSON in the console. You would need no explanation about this.
+
+```
+{
+    "rows": 9,
+    "isDifferent": true,
+    "insertedRows": 1,
+    "deletedRows": 1,
+    "changedRows": 2,
+    "equalRows": 5
+}
+```
+
+You can quickly parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.

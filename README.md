@@ -1,5 +1,4 @@
-Utilizing java-diff-utils in Katalon Studio
-===========================================
+# Utilizing java-diff-utils in Katalon Studio - Reborn
 
 - 1st release date: April, 2021
 - 2nd revision: Oct, 2023

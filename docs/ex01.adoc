@@ -1,0 +1,16 @@
+== ex01 diff 2 strings and write the report into file
+
+The following script does
+
+1. The following script calls `TextsDiffer.diffString(String,String,String)`.
+2. The 1st and 2nd arguments are regarded as input text. The inputs contain XML texts which are similar but different in detail.
+3. The 3rd argument is regarded as a path of output file.
+4. The output will be in Markdown text format.
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex01 diff 2 strings and write the report into file/Script1696166007171.groovy[]
+----
+
+The diff report generated looks like this:
+

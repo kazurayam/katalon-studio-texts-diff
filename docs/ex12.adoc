@@ -1,0 +1,1 @@
+== ex12 diff 2 files with relative paths to the specified base directory
