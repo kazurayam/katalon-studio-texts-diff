@@ -1,40 +1,29 @@
 Utilizing java-diff-utils in Katalon Studio
 ===========================================
 
-1st release date: April, 2021
-2nd revision: Oct, 2023
+- 1st release date: April, 2021
+- 2nd revision: Oct, 2023
+- author kazurayam
 
-author kazurayam
+This project presents a custom Keyword (a helper class in Groovy language) named `com.kazurayam.ks.TextsDiffer` to be used in [Katalon Studio](https://www.katalon.com/) projects.
 
-This project presents a custom Keyword (a helper class) named `com.kazurayam.ks.TextsDiffer` for projects of [Katalon Studio](https://www.katalon.com/).
-
-The class originally developed with Katalon Studio v8.6.6 but is not dependent on the Katalon Studio's version. It should work on even KS v7.0.
+The class originally developed with Katalon Studio v8.6.6 but is not dependent on the Katalon Studio's version. It should work on even KS v7.\*.
 
 ## Problem to solve
 
-Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc.
-
-As minimum requirement, they want to know if 2 texts are completely identical or not.
-
-Additionally they want to see the differences, if any, in human-readable format, such as
-[Markdown](https://guides.github.com/features/mastering-markdown/).
-
-Testers usually do not require Patching features which many "diff utilities" provide.
-
-I want to perform texts-diff and reporting in Katalon Studio.
+Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc. They sometimes want to check if 2 texts are identical or not. Additionally they want to see the detail differences, if any. I want to perform texts-diff and reporting in Katalon Studio.
 
 ## Solution
 
 Utilize [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/wiki) in Katalon Studio.
 
-## How to run the demo
+## How is this Git repository structured
 
-### Preparing the project
+This project reqpository 'katalon-studio-texts-diff' contains 3 sub directories: `app-project`, `docs` and `lib-project`. The `lib-project` contains a Katalon Studio project where I developed the source code of the custom keyword. The `app-project` contains a Katalon Studio project where I applied the custom Keyword to demonstrate how to use it.
 
-- Download the zip of this project from the [Releases](https://github.com/kazurayam/katalon-studio-texts-diff/releases) page, unzip it.
-- The root directory 'katalon-studio-texts-diff' contains 3 sub directories: `app-project`, `docs` and `lib-project`. The `lib-project` contains a Katalon Studio project where I developed the source code of the custom keyword. The `app-project` contains a Katalon Studio project where I applied the custom Keyword to demonstrate how to use it. If you want to use the custom Keyword in your own Katalon project, you want to look at the `app-project`.
+If you are going to use the custom Keyword in your own Katalon project, you want to look at the `app-project`.
 
-### Installing external dependencies into your Katalon project
+## How to apply this to your own Katalon project
 
 In the `Drivers` directory of your Katalon project, you NEED to install 2 external jar files.
 
@@ -43,13 +32,13 @@ In the `Drivers` directory of your Katalon project, you NEED to install 2 extern
 
 The [`java-diff-utils-x.x.x`](https://github.com/java-diff-utils/java-diff-utils) is an OpenSource library in Java for performing the comparison operations between texts. This enables us to generate diff information.
 
-I developed the [`katalon-studio-texts-diff-x.x.x`] library which wraps the `java-diff-utils-x.x.x` to utilize it in your Katalon Studio project. It can generate a diff report in Markdown format with side-by-side view.
+I developed the `katalon-studio-texts-diff-x.x.x` library which wraps the `java-diff-utils-x.x.x` to utilize it in your Katalon Studio project. With it, you get a diff report in Markdown format with side-by-side view.
 
-### Running the sample test
+### Creating and running your first test
 
-You want to start Katalon Studio GUI. You want to open the `app-project` directory. A Katalon project named `TextsDifferApplication` will be launched.
+You want to start Katalon Studio GUI. You want to open the `app-project` directory.
 
-Open the Test Case "`ex01 diff 2 strings and write the report into file`". It looks like this:
+You want to create a new Test Case `ex01`, of which code looks as follows. You can just copy and paste this:
 
 ```
 import java.nio.file.Files
@@ -90,14 +79,6 @@ Path out = Paths.get(outpath)
 assert Files.exists(out)
 assert out.toFile().length() > 0
 ```
-
-The script will compare 2 xml files
-
-  - [`doc1.xml`](./app-project/src/test/fixtures/doc1.xml)
-  - [`doc2.xml`](./app-project/src/test/fixtures/doc2.xml)
-
-
-### How to view the output diff report
 
 The script will create a diff report in Markdown format, save it into a file `app-project/build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
 
