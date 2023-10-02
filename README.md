@@ -8,6 +8,12 @@ This project presents a custom Keyword (a helper class in Groovy language) named
 
 The class is developed using Katalon Studio v8.6.6 but is not dependent on the Katalon Studio's version. It should work on KS v7 as well.
 
+## How is this Git repository structured
+
+This project reqpository 'katalon-studio-texts-diff' contains 3 sub directories: `app-project`, `docs` and `lib-project`. The `lib-project` contains a Katalon Studio project where I developed the source code of the custom keyword. The `app-project` contains a Katalon Studio project where I applied the custom Keyword to demonstrate how to use it.
+
+If you are going to use the custom Keyword in your own Katalon project, you want to look at the `app-project`.
+
 ## Problem to solve
 
 Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc. They sometimes want to check if 2 texts are identical or not. Additionally they want to see the detail differences, if any. I want to perform texts-diff and reporting in Katalon Studio.
@@ -16,11 +22,6 @@ Web testers often want to compare 2 text files. The files could be in various fo
 
 Utilize [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/wiki) in Katalon Studio.
 
-## How is this Git repository structured
-
-This project reqpository 'katalon-studio-texts-diff' contains 3 sub directories: `app-project`, `docs` and `lib-project`. The `lib-project` contains a Katalon Studio project where I developed the source code of the custom keyword. The `app-project` contains a Katalon Studio project where I applied the custom Keyword to demonstrate how to use it.
-
-If you are going to use the custom Keyword in your own Katalon project, you want to look at the `app-project`.
 
 ## How to apply this to your own Katalon project
 
