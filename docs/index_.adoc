@@ -6,11 +6,19 @@
 This page shows the examples how to use `com.kazurayam.ks.TextsDiffer` class in Katalon Studio. You can download the jar at the [`Releases`](https://github.com/kazurayam/katalon-studio-texts-diff/releases) page.
 
 include::ex01.adoc[]
+
 include::ex02.adoc[]
+
 include::ex03.adoc[]
+
 include::ex11.adoc[]
+
 include::ex12.adoc[]
+
 include::ex13.adoc[]
+
 include::ex21.adoc[]
+
 include::ex31.adoc[]
+
 include::ex32.adoc[]

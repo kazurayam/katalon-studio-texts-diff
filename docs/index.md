@@ -1,6 +1,13 @@
 -   [Examples](#examples)
     -   [ex01 diff 2 strings and write the report into file](#ex01-diff-2-strings-and-write-the-report-into-file)
     -   [ex02 diff 2 strings and print the stats to console](#ex02-diff-2-strings-and-print-the-stats-to-console)
+    -   [ex03 do the same as ex02 by calling TextsDiff as Plain Old class (not as Keyword)](#ex03-do-the-same-as-ex02-by-calling-textsdiff-as-plain-old-class-not-as-keyword)
+    -   [ex11 diff 2 files with relative paths to the current working directory](#ex11-diff-2-files-with-relative-paths-to-the-current-working-directory)
+    -   [ex12 diff 2 files with relative paths to the specified base directory](#ex12-diff-2-files-with-relative-paths-to-the-specified-base-directory)
+    -   [ex13 diff files with absolute paths](#ex13-diff-files-with-absolute-paths)
+    -   [ex21 diff 2 URLs](#ex21-diff-2-urls)
+    -   [ex31 chronos diff](#ex31-chronos-diff)
+    -   [ex32 twins diff](#ex32-twins-diff)
 
 # Examples
 
@@ -132,14 +139,14 @@ The following script does
     String json = CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2)
     println json
 
+    // parse the returned JSON, read the content to make assertions
     JsonSlurper slurper = new JsonSlurper()
     def object = slurper.parseText(json)
-
     assert object instanceof Map
     assert object.isDifferent == true
     assert object.changedRows == 2
 
-When I run it, this script emits the following JSON in the console. You would need no explanation about this.
+When I run it, this script emits the following JSON in the console.
 
     {
         "rows": 9,
@@ -150,11 +157,53 @@ When I run it, this script emits the following JSON in the console. You would ne
         "equalRows": 5
     }
 
-With this JSON, you can quickly find if the 2 input texts or different or not. You can parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.
-== ex03 diff 2 strings and print the stats to console - as Plain Old Class
-== ex11 diff 2 files with relative paths to the current working directory
-== ex12 diff 2 files with relative paths to the specified base directory
-== ex13 diff files with absolute paths
-== ex21 diff 2 URLs
-== ex31 chronos diff
-== ex32 twins diff
+With this JSON, you can quickly see if the 2 input texts are different or not. You can parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.
+
+## ex03 do the same as ex02 by calling TextsDiff as Plain Old class (not as Keyword)
+
+The `com.kazurayam.ks.TextsDiff` is a plain old Groovy class. You can call it directly.
+
+    import com.kazurayam.ks.TextsDiffer
+
+    /**
+     * ex03 call the TextsDiffer class directly, not as a custom Keyword
+     */
+
+    String text1 = """<doc>
+    <body>
+    <section>
+    <p>Hello, John!</p>
+    </section>
+    <p></p>
+    </body>
+    </doc>
+    """
+
+    String text2 = """<doc>
+    <body>
+    <section id="main">
+    <p>Hello, Paul!</p>
+    <p>Have a break!</p>
+    </section>
+    </body>
+    </doc>
+    """
+
+    // pass 2 arguments of String to receive a String as report
+    TextsDiffer differ = new TextsDiffer()
+    String md = differ.diffStrings(text1, text2)
+    println md
+
+This script does not use `CustomKeywords.'fully qualified class name.methodName'(args)` syntax. This script does the same processing as the `ex02`
+
+## ex11 diff 2 files with relative paths to the current working directory
+
+## ex12 diff 2 files with relative paths to the specified base directory
+
+## ex13 diff files with absolute paths
+
+## ex21 diff 2 URLs
+
+## ex31 chronos diff
+
+## ex32 twins diff

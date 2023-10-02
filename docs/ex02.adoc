@@ -13,7 +13,7 @@ The following script does
 include::../app-project/Scripts/ex02 diff 2 strings and print the stats to console/Script1696208256058.groovy[]
 ----
 
-When I run it, this script emits the following JSON in the console. You would need no explanation about this.
+When I run it, this script emits the following JSON in the console.
 
 ```
 {
@@ -26,4 +26,4 @@ When I run it, this script emits the following JSON in the console. You would ne
 }
 ```
 
-With this JSON, you can quickly find if the 2 input texts or different or not. You can parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.
+With this JSON, you can quickly see if the 2 input texts are different or not. You can parse the returned JSON string into an instance of `java.util.Map` using `groovy.json.JsonSlurper` and get access to the content. The `ex02` contains sample script how to do it.
