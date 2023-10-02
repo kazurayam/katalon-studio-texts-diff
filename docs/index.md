@@ -384,8 +384,161 @@ I could preview this long Markdown text in VSCode Markdown, as follows:
 
 This diff tells me that the HTML of both URLs uses the same file `bootstrap-icons.css` but the versions are different. `http://myadmin.kazurayam.com` links to the version 1.5.0 while `http://devadmin.kazurayam.com` links to the version 1.7.2. Such difference is hardly visible on the page view on browser.
 
-Sometimes we, developers of web application, want to compare 2 environments of a single web application. These 2 environments would have 2 different host names. For example, the Production environment and the Development. The 2 environment will produce similar web pages which could be silightly different in detail; and we are seriously interested in the details. In such case, the method `TextsDiff.diffURLs()` could be useful.
+Sometimes we, developers of web application, want to compare 2 environments of a single web application. These 2 environments would have 2 different host names. For example, the Production environment and the Development. The 2 environment will produce similar web pages which could be slightly different in detail; and we are seriously interested in the details. In such case, the method `TextsDiff.diffURLs()` could be useful.
 
 ## ex31 chronos diff
+
+In some cases, we want to perform a work procedure as follows. We have a single web application, a single environment, a single host name to test.
+
+1.  Download web resources from the web app, save it into a local file
+
+2.  Have some intermission (hours, minutes, seconds, …​ undetermined)
+
+3.  Download web resources form the same web app, save it into another local file
+
+4.  Pick up the 2 files, compare them to find any *chronological* differences between the 2 observations
+
+The following code shows the essence of the work.
+
+    import java.nio.channels.Channels
+    import java.nio.channels.FileChannel
+    import java.nio.channels.ReadableByteChannel
+    import java.nio.file.Files
+    import java.nio.file.Path
+    import java.nio.file.Paths
+
+    import com.kazurayam.ks.TextsDiffer
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    import groovy.json.JsonOutput
+
+    /**
+     * ex31 chronos diff
+     * 
+     * download JSON from a URL into file, do it twice, then diff
+     */
+
+    def downloadURL(URL url, File output) {
+        FileOutputStream fos = new FileOutputStream(output)
+        FileChannel fch = fos.getChannel()
+        ReadableByteChannel rbch = Channels.newChannel(url.openStream())
+        fch.transferFrom(rbch, 0, Long.MAX_VALUE);
+    }
+
+    def prettyPrintJson(Path json) {
+        String t = JsonOutput.prettyPrint(json.toFile().text)
+        json.toFile().text = t  
+    }
+
+    // Thanks to https://worldtimeapi.org/pages/examples
+    URL url = new URL("http://worldtimeapi.org/api/ip")
+
+    Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+    Files.createDirectories(projectDir.resolve("build/tmp/testOutput/ex31"))
+    Path text1 = Paths.get("build/tmp/testOutput/ex31/text1.json")
+    Path text2 = Paths.get("build/tmp/testOutput/ex31/text2.json")
+
+    // 1st download a JSON from the URL 
+    downloadURL(url, text1.toFile())
+    prettyPrintJson(text1)
+
+    // Intermission
+    Thread.sleep(3000)
+
+    // 2nd download a JSON from the same URL
+    downloadURL(url, text2.toFile())
+    prettyPrintJson(text2)
+
+    // then diff the 2 texts
+    TextsDiffer differ = new TextsDiffer()
+    Path out = projectDir.resolve("build/tmp/testOutput/ex31/diff.md")
+
+    differ.diffFiles(text1, text2, out)
+
+This example creates output like this.
+
+-   `text1.json`
+
+<!-- -->
+
+    {
+        "abbreviation": "JST",
+        "client_ip": "163.131.26.171",
+        "datetime": "2023-10-01T22:15:18.742317+09:00",
+        "day_of_week": 0,
+        "day_of_year": 274,
+        "dst": false,
+        "dst_from": null,
+        "dst_offset": 0,
+        "dst_until": null,
+        "raw_offset": 32400,
+        "timezone": "Asia/Tokyo",
+        "unixtime": 1696166118,
+        "utc_datetime": "2023-10-01T13:15:18.742317+00:00",
+        "utc_offset": "+09:00",
+        "week_number": 39
+    }
+
+-   `text2.json`
+
+<!-- -->
+
+    {
+        "abbreviation": "JST",
+        "client_ip": "163.131.26.171",
+        "datetime": "2023-10-01T22:15:22.058915+09:00",
+        "day_of_week": 0,
+        "day_of_year": 274,
+        "dst": false,
+        "dst_from": null,
+        "dst_offset": 0,
+        "dst_until": null,
+        "raw_offset": 32400,
+        "timezone": "Asia/Tokyo",
+        "unixtime": 1696166122,
+        "utc_datetime": "2023-10-01T13:15:22.058915+00:00",
+        "utc_offset": "+09:00",
+        "week_number": 39
+    }
+
+-   `diff.md`
+
+<!-- -->
+
+    - original: `build/tmp/testOutput/ex31/text1.json`
+    - revised : `build/tmp/testOutput/ex31/text2.json`
+
+    **DIFFERENT**
+
+    - inserted rows: 0
+    - deleted rows : 0
+    - changed rows : 3
+    - equal rows:  : 14
+
+    |line#|S|original|revised|
+    |-----|-|--------|-------|
+    |1| |{|{|
+    |2| |    "abbreviation": "JST",|    "abbreviation": "JST",|
+    |3| |    "client_ip": "163.131.26.171",|    "client_ip": "163.131.26.171",|
+    |4|C|    "datetime": "2023-10-<span style="color:red; font-weight:bold; background-color:#ffeef0">01T22:15:18</span>.<span style="color:red; font-weight:bold; background-color:#ffeef0">742317</span>+09:00",|    "datetime": "2023-10-<span style="color:green; font-weight:bold; background-color:#e6ffec">01T22:15:22</span>.<span style="color:green; font-weight:bold; background-color:#e6ffec">058915</span>+09:00",|
+    |5| |    "day_of_week": 0,|    "day_of_week": 0,|
+    |6| |    "day_of_year": 274,|    "day_of_year": 274,|
+    |7| |    "dst": false,|    "dst": false,|
+    |8| |    "dst_from": null,|    "dst_from": null,|
+    |9| |    "dst_offset": 0,|    "dst_offset": 0,|
+    |10| |    "dst_until": null,|    "dst_until": null,|
+    |11| |    "raw_offset": 32400,|    "raw_offset": 32400,|
+    |12| |    "timezone": "Asia/Tokyo",|    "timezone": "Asia/Tokyo",|
+    |13|C|    "unixtime": <span style="color:red; font-weight:bold; background-color:#ffeef0">1696166118</span>,|    "unixtime": <span style="color:green; font-weight:bold; background-color:#e6ffec">1696166122</span>,|
+    |14|C|    "utc_datetime": "2023-10-<span style="color:red; font-weight:bold; background-color:#ffeef0">01T13:15:18</span>.<span style="color:red; font-weight:bold; background-color:#ffeef0">742317</span>+00:00",|    "utc_datetime": "2023-10-<span style="color:green; font-weight:bold; background-color:#e6ffec">01T13:15:22</span>.<span style="color:green; font-weight:bold; background-color:#e6ffec">058915</span>+00:00",|
+    |15| |    "utc_offset": "+09:00",|    "utc_offset": "+09:00",|
+    |16| |    "week_number": 39|    "week_number": 39|
+    |17| |}|}|
+
+The `diff.md` file could be previews as follows:
+
+![ex31](./images/ex31.png)
+
+In this example we can easily find the difference --- the timestamp changed.
 
 ## ex32 twins diff
