@@ -382,9 +382,9 @@ I could preview this long Markdown text in VSCode Markdown, as follows:
 
 ![ex21](./images/ex21.png)
 
-This diff tells me that the both URLs uses the same file `bootstrap-icons.css` but the versions are different. `http://myadmin.kazurayam.com` links to the version 1.5.0 while `http://devadmin.kazurayam.com` links to the version 1.7.2. Such difference is hardly visible on the page view.
+This diff tells me that the HTML of both URLs uses the same file `bootstrap-icons.css` but the versions are different. `http://myadmin.kazurayam.com` links to the version 1.5.0 while `http://devadmin.kazurayam.com` links to the version 1.7.2. Such difference is hardly visible on the page view on browser.
 
-Sometimes we, developers of web application, wants to compare 2 environments of a single application. For example, the Production environment and the Development. In such case, the method `TextsDiff.diffURLs()` could be useful.
+Sometimes we, developers of web application, want to compare 2 environments of a single web application. These 2 environments would have 2 different host names. For example, the Production environment and the Development. The 2 environment will produce similar web pages which could be silightly different in detail; and we are seriously interested in the details. In such case, the method `TextsDiff.diffURLs()` could be useful.
 
 ## ex31 chronos diff
 
