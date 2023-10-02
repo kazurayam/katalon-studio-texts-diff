@@ -257,13 +257,32 @@ You can specify the base directory with which the relative paths are resolved. L
         "src/test/fixtures/doc2.xml",
         "build/tmp/testOutput/ex12-output.md")
 
-This example calls `TextsDiffer.diffFiles(String, String, String String)` method. The 1st argument is regarded the path of a directory. When the 2nd, 3rd and 4th arguments are relative path, then these will be resolved to absolute paths taking the 1st directory path as the base.
+This example calls `TextsDiffer.diffFiles(String, String, String String)` method. The 1st argument is expected to be an absolute path of a directory. When the 2nd, 3rd and 4th arguments are relative path, then these will be resolved to absolute paths taking the 1st directory path as the base.
 
 With this method signature, you can specify input files and output file located outside the current working directory.
 
 You can also specify an absolute path to the 2nd, 3rd and 4th argument. These absolute path will be respected regardless whatever value is given to the 1st argument.
 
 ## ex13 diff files with absolute paths
+
+You can specify absolute paths as the input files and the output file. Let’s have a look at an example:
+
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    /**
+     *  ex13 diff 2 files with absolute paths
+     */
+
+    CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffFiles'(
+        "${System.getProperty('user.home')}/tmp/doc1.xml",
+        "${System.getProperty('user.home')}/tmp/doc2.xml",
+        "${RunConfiguration.getProjectDir()}/build/tmp/testOutput/ex13-output.md")
+
+The expression `System.getProperty('user.home')` will return a string like `'/Users/kazurayam'` which is the absolute path of OS user of mine.
+
+The expression `RunConfiguration.getProject()` will return a string like `/Users/kazurayam/tmp/myKatalonProject` which is the absolute path of the project’s root directory.
+
+Using this format you can specify any files located anywhere on the local file system.
 
 ## ex21 diff 2 URLs
 

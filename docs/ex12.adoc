@@ -7,7 +7,7 @@ You can specify the base directory with which the relative paths are resolved. L
 include::../app-project/Scripts/ex12 diff 2 files with relative paths to the specified base directory/Script1696121831700.groovy[]
 ----
 
-This example calls `TextsDiffer.diffFiles(String, String, String String)` method. The 1st argument is regarded the path of a directory. When the 2nd, 3rd and 4th arguments are relative path, then these will be resolved to absolute paths taking the 1st directory path as the base.
+This example calls `TextsDiffer.diffFiles(String, String, String String)` method. The 1st argument is expected to be an absolute path of a directory. When the 2nd, 3rd and 4th arguments are relative path, then these will be resolved to absolute paths taking the 1st directory path as the base.
 
 With this method signature, you can specify input files and output file located outside the current working directory.
 
