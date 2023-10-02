@@ -239,9 +239,29 @@ You can write a Test Case script which compares the 2 files and writes a diff re
 
 In this example, the path is written as a relative path. The `TextsDiffer` interpretes the relative paths are relative to the current working directory.
 
-The `ex11` code is rather fragile as it depends on the current working directory (**CWD** for short). When you run a Test Case in Katalon Studio GUI, the **CWD** will be always equal to the project’s root directory. However when you run a Test Case in Katalon Runtime Engine in the OS command line environment, the **CWD** is variable. The **CWD** depends how you write the shell script that calls the `katalonc` command. Therefore the `ex11` script would run fine in Katalon Studio but it may fail in Katalon Runtime Engine.
+The `ex11` code is rather fragile as it depends on the current working directory (**CWD** for short). When you run a Test Case in Katalon Studio GUI, the **CWD** will be always equal to the project’s root directory. However when you run a Test Case in Katalon Runtime Engine in the OS command line environment, the **CWD** is variable. The **CWD** depends how you write the shell script that calls the `katalonc` command. Therefore the `ex11` script would run fine in Katalon Studio, but it may fail in Katalon Runtime Engine due to FileNotFoundException.
 
 ## ex12 diff 2 files with relative paths to the specified base directory
+
+You can specify the base directory with which the relative paths are resolved. Let’s have a look at an example:
+
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    /**
+     *  ex12 diff 2 files with relative paths to the specified base directory
+     */
+
+    CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffFiles'(
+        RunConfiguration.getProjectDir(),     /* base directory */
+        "src/test/fixtures/doc1.xml",
+        "src/test/fixtures/doc2.xml",
+        "build/tmp/testOutput/ex12-output.md")
+
+This example calls `TextsDiffer.diffFiles(String, String, String String)` method. The 1st argument is regarded the path of a directory. When the 2nd, 3rd and 4th arguments are relative path, then these will be resolved to absolute paths taking the 1st directory path as the base.
+
+With this method signature, you can specify input files and output file located outside the current working directory.
+
+You can also specify an absolute path to the 2nd, 3rd and 4th argument. These absolute path will be respected regardless whatever value is given to the 1st argument.
 
 ## ex13 diff files with absolute paths
 

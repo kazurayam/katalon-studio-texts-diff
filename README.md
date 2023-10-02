@@ -6,7 +6,7 @@
 
 This project presents a custom Keyword (a helper class in Groovy language) named `com.kazurayam.ks.TextsDiffer` to be used in [Katalon Studio](https://www.katalon.com/) projects.
 
-The class originally developed with Katalon Studio v8.6.6 but is not dependent on the Katalon Studio's version. It should work on even KS v7.\*.
+The class is developed using Katalon Studio v8.6.6 but is not dependent on the Katalon Studio's version. It should work on KS v7 as well.
 
 ## Problem to solve
 
@@ -103,7 +103,7 @@ Once done, the script will create a diff report in Markdown format, save it into
 |9| |&lt;/doc&gt;|&lt;/doc&gt;|
 ```
 
-The raw Markdown text is hard to read in a plain text editor. So you want to view it using some viewer tool for Markdown document. For example, I personally use [Visual Studio Code, Markdown preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview). You can preview the output diff report VSCode as follows.
+The raw Markdown text is hard to read in a plain text editor. So you want to view it using some Markdown viewer. For example, I personally use [Visual Studio Code, Markdown preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview). You can preview the report in VSCode as follows.
 
 ![ex01](./docs/images/ex01.png)
 
