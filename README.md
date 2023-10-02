@@ -1,90 +1,124 @@
-Utilizing java-diff-utils in Katalon Studio
-===========================================
+# Utilizing java-diff-utils in Katalon Studio - Reborn
 
-1st release date: April, 2021
-2nd revision: Sept, 2023
+- 1st release date: April, 2021
+- 2nd revision: Oct, 2023
+- author kazurayam
 
-author kazurayam
+This project presents a custom Keyword (a helper class in Groovy language) named `com.kazurayam.ks.TextsDiffer` to be used in [Katalon Studio](https://www.katalon.com/) projects.
 
-This is a small [Katalon Studio](https://www.katalon.com/) project for demonstration purpose.
+The class is developed using Katalon Studio v8.6.6 but is not dependent on the Katalon Studio's version. It should work on KS v7 as well.
 
-This project was originally developed with Katalon Studio v7.9.1 but is not KS-version-dependent at all.
+## Problem to solve
 
-This project was created in order to propose a solution to the following post 
-in the Katalon Studio User Forum:
+Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc. They sometimes want to check if 2 texts are identical or not. Additionally they want to see the detail differences, if any. I want to perform texts-diff and reporting in Katalon Studio.
 
-- [How can I compare 2 XML files](https://forum.katalon.com/t/how-can-i-compare-2-xml-files/44854)
-
-# Problem to solve
-
-Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc.
-
-As minimum requirement, they want to know if 2 texts are completely identical or not.
-
-Additionally they want to see the differences, if any, in human-readable format, such as 
-[Markdown](https://guides.github.com/features/mastering-markdown/).
-
-Testers usually do not require Patching features which many "diff utilities" provide.
-
-I want to perform texts-diff and reporting in Katalon Studio.
-
-# Solution
+## Solution
 
 Utilize [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/wiki) in Katalon Studio.
 
-# How to run the demo
+## How is this Git repository structured
 
-- Download the zip of this project from the [Releases](https://github.com/kazurayam/katalon-studio-texts-diff/releases) page, 
-unzip it, open it with your Katalon Studio.
-- In the `<projectDir>/Drivers` directory, you will find `java-diff-utils-4.9.jar` installed.
-- open [`Test Cases/TC1`](./Scripts/TC1/Script1619137698459.groovy) and run it.
-- the script will compare 2 xml files
-  - [`doc1.xml`](./Include/fixtures/doc1.xml)
-  - [`doc2.xml`](./Include/fixtures/doc2.xml)
-- it will create a diff report in Markdown format, save it into a file `<projectDir>/out.md`
+This project reqpository 'katalon-studio-texts-diff' contains 3 sub directories: `app-project`, `docs` and `lib-project`. The `lib-project` contains a Katalon Studio project where I developed the source code of the custom keyword. The `app-project` contains a Katalon Studio project where I applied the custom Keyword to demonstrate how to use it.
 
-# How the report looks like
+If you are going to use the custom Keyword in your own Katalon project, you want to look at the `app-project`.
 
-The `<projectDir>/out.md` will be formated in Markdown like this:
+## How to apply this to your own Katalon project
+
+In the `Drivers` directory of your Katalon project, you NEED to install 2 external jar files.
+
+![Library Management](./docs/images/LibraryManagement.png)
+
+1. [`java-diff-utils-4.12.jar`](https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils/4.12)
+2. [`katalon-studio-texts-diff-x.x.x.jar`](https://github.com/kazurayam/katalon-studio-texts-diff/releases)
+
+The [`java-diff-utils-x.x.x`](https://github.com/java-diff-utils/java-diff-utils) is an OpenSource library in Java for performing the comparison operations between texts. This enables us to generate diff information.
+
+I developed the `katalon-studio-texts-diff-x.x.x` library which wraps the `java-diff-utils-x.x.x` to utilize it in your Katalon Studio project. With it, you get a diff report in Markdown format with side-by-side view.
+
+### Creating and running your first test
+
+You want to start Katalon Studio GUI.
+
+You want to create a new Test Case `ex01` (... any name you can choose in fact), of which code looks as follows. You can just copy and paste this:
 
 ```
-- original: /Users/username/projectdir/Include/fixtures/doc1.xml
-- revised : /Users/username/projectdir//Include/fixtures/doc2.xml
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
-|line#|original|revised|
-|-----|--------|-------|
-|1|&lt;doc&gt;|&lt;doc&gt;|
-|2|&lt;body&gt;|&lt;body&gt;|
-|3|*&lt;section&gt;*|**&lt;section id="main"&gt;**|
-|4|&lt;p&gt;Hello, *John!&lt;*/p&gt;|&lt;p&gt;Hello, **Paul!&lt;**/p&gt;|
-|5||**&lt;p&gt;Have a break!&lt;/p&gt;**|
-|6|&lt;/section&gt;|&lt;/section&gt;|
-|7|&lt;/body&gt;|&lt;/body&gt;|
-|8|&lt;/doc&gt;|&lt;/doc&gt;|
+/**
+ * ex01 diff 2 strings and write the report into file
+ */
+
+String text1 = """<doc>
+<body>
+<section>
+<p>Hello, John!</p>
+</section>
+<p></p>
+</body>
+</doc>
+"""
+
+String text2 = """<doc>
+<body>
+<section id="main">
+<p>Hello, Paul!</p>
+<p>Have a break!</p>
+</section>
+</body>
+</doc>
+"""
+
+String outpath = "build/tmp/testoutput/ex01-output.md"
+
+// take diff of 2 Strings, write the diff
+CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2, outpath)
+
+Path out = Paths.get(outpath)
+assert Files.exists(out)
+assert out.toFile().length() > 0
 ```
 
-I copy & past it here:
+Now you can run it as a usual Katalon Test Case by clicking the green button ![run](./docs/images/run_katalon_test.png).
 
-----
-- original: `/Users/username/projectdir/Include/fixtures/doc1.xml`
-- revised : `/Users/username/projectdir//Include/fixtures/doc2.xml`
+Once done, the script will create a diff report in Markdown format, save it into a file `build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
 
-|line#|original|revised|
-|-----|--------|-------|
-|1|&lt;doc&gt;|&lt;doc&gt;|
-|2|&lt;body&gt;|&lt;body&gt;|
-|3|*&lt;section&gt;*|**&lt;section id="main"&gt;**|
-|4|&lt;p&gt;Hello, *John!&lt;*/p&gt;|&lt;p&gt;Hello, **Paul!&lt;**/p&gt;|
-|5||**&lt;p&gt;Have a break!&lt;/p&gt;**|
-|6|&lt;/section&gt;|&lt;/section&gt;|
-|7|&lt;/body&gt;|&lt;/body&gt;|
-|8|&lt;/doc&gt;|&lt;/doc&gt;|
-----
+```
+**DIFFERENT**
 
-I think it is readable enough. Of course you can change the Test Case code so that it outputs in any format you like.
+- inserted rows: 1
+- deleted rows : 1
+- changed rows : 2
+- equal rows:  : 5
 
+|line#|S|original|revised|
+|-----|-|--------|-------|
+|1| |&lt;doc&gt;|&lt;doc&gt;|
+|2| |&lt;body&gt;|&lt;body&gt;|
+|3|C|<span style="color:red; font-weight:bold; background-color:#ffeef0">&lt;section&gt;</span>|<span style="color:green; font-weight:bold; background-color:#e6ffec">&lt;section id="main"&gt;</span>|
+|4|C|&lt;p&gt;Hello, <span style="color:red; font-weight:bold; background-color:#ffeef0">John!&lt;</span>/p&gt;|&lt;p&gt;Hello, <span style="color:green; font-weight:bold; background-color:#e6ffec">Paul!&lt;</span>/p&gt;|
+|5|I||<span style="color:green; font-weight:bold; background-color:#e6ffec">&lt;p&gt;Have a break!&lt;/p&gt;</span>|
+|6| |&lt;/section&gt;|&lt;/section&gt;|
+|7|D|<span style="color:red; font-weight:bold; background-color:#ffeef0">&lt;p&gt;&lt;/p&gt;</span>||
+|8| |&lt;/body&gt;|&lt;/body&gt;|
+|9| |&lt;/doc&gt;|&lt;/doc&gt;|
+```
 
+The raw Markdown text is hard to read in a plain text editor. So you want to view it using some Markdown viewer. For example, I personally use [Visual Studio Code, Markdown preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview). You can preview the report in VSCode as follows.
 
-## Where to get external dependencies
+![ex01](./docs/images/ex01.png)
 
-- https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils/4.9
+This looks nice, doesn't it?
+
+## More types of input text
+
+The sample Test Case `ex01` uses `com.kazurayam.ks.TextsDiffer.diffString()` method that takes 2 Strings as input. The `TextsDiffer` class implements more methods that can take various types: Files, URLs etc.
+
+See the [`Examples`](https://kazurayam.github.io/katalon-studio-texts-diff/) document for more use cases.
+
+## API
+
+You can have a look at the API documentation of `TextsDiffer` class at
+
+- [API doc](https://kazurayam.github.io/katalon-studio-texts-diff/api/index.html)

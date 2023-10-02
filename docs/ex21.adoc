@@ -1,0 +1,31 @@
+== ex21 diff 2 URLs
+
+`com.kazurayam.ks.TextsDiffer.diffURLs(String,String)` method can download 2 texts from the specified URL and take diff of them. Let me show you an example.
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex21 diff 2 URLs/Script1696122857223.groovy[]
+----
+
+You can have a look at the target URLs:
+
+- link:http://myadmin.kazurayam.com/[]
+- link:http://devadmin.kazurayam.com/[]
+
+These 2 pages look similar, but is different in detail.
+
+The script will emit the following output.
+
+[source,text]
+----
+include::./out/ex21-output.md[]
+----
+
+I could preview this long Markdown text in VSCode Markdown, as follows:
+
+image:./images/ex21.png[]
+
+This diff tells me that the HTML of both URLs uses the same file `bootstrap-icons.css` but the versions are different. `http://myadmin.kazurayam.com` links to the version 1.5.0 while `http://devadmin.kazurayam.com` links to the version 1.7.2. Such difference is hardly visible on the page view on browser.
+
+Sometimes we, developers of web application, want to compare 2 environments of a single web application. These 2 environments would have 2 different host names. For example, the Production environment and the Development. The 2 environment will produce similar web pages which could be slightly different in detail; and we are seriously interested in the details. In such case, the method `TextsDiff.diffURLs()` could be useful.
+

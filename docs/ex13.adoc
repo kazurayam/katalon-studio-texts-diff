@@ -1,0 +1,12 @@
+== ex13 diff files with absolute paths
+
+You can specify absolute paths as the input files and the output file. Let's have a look at an example:
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex13 diff files with absolute paths/Script1696121839633.groovy[]
+----
+
+The expression `System.getProperty('user.home')` will return the absolute path of "home directory" of my OS user. For example, `'/Users/kazurayam'`.
+
+The expression `RunConfiguration.getProject()` will return a string like `/Users/kazurayam/tmp/myKatalonProject` which is the absolute path of the project's root directory.

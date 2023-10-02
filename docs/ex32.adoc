@@ -1,0 +1,42 @@
+== ex32 twins diff
+
+In some cases, we want to compare 2 environments of a single web application --- say, the Production environment and the Development. The host name of the 2 environment's URL are different, but the 2 environments have almost identical software and database but not completely the same. We are interested in the minute differences of the two. So we would do the following work procedure:
+
+1. Download web resource from the environment P, save it into a local file
+2. Download web resource from the environment D, save it into a local file
+3. Pick up the 2 files, compare them to find any differences between the twins.
+
+The following code shows the essence of the work.
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex32 twins diff/Script1696149402999.groovy[]
+----
+
+This example script shows a simple function `download URL(URL, File)` that downloads any amount of bytes from a given URL and save it into a local file. This should work for any types of web resources --- HTML, JSON, XML, PDF, images, videos, etc.
+
+This example creates output like this:
+
+- `text1.html`
+[source,html]
+----
+include::out/ex32/text1.html[]
+----
+
+- `text2.html`
+[source,html]
+----
+include::out/ex32/text2.html[]
+----
+
+- `diff.md`
+[source,text]
+----
+include::./out/ex32/diff.md[]
+----
+
+The `diff.md` file could be previewed as follows:
+
+image:./images/ex32.png[]
+
+The result is just the same as the ex21 case.

@@ -1,0 +1,17 @@
+== ex12 diff 2 files with relative paths to the specified base directory
+
+You can specify the base directory with which the relative paths are resolved. Let's have a look at an example:
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex12 diff 2 files with relative paths to the specified base directory/Script1696121831700.groovy[]
+----
+
+This example calls `TextsDiffer.diffFiles(String, String, String String)` method. The 1st argument is expected to be an absolute path of a directory. When the 2nd, 3rd and 4th arguments are relative path, then these will be resolved to absolute paths taking the 1st directory path as the base.
+
+With this method signature, you can specify input files and output file located outside the current working directory.
+
+You can also specify an absolute path to the 2nd, 3rd and 4th argument. These absolute path will be respected regardless whatever value is given to the 1st argument.
+
+
+
