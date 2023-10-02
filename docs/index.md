@@ -1,22 +1,26 @@
+-   [Examples](#examples)
+    -   [ex01 diff 2 strings and write the report into file](#ex01-diff-2-strings-and-write-the-report-into-file)
+    -   [ex02 diff 2 strings and print the stats to console](#ex02-diff-2-strings-and-print-the-stats-to-console)
+
 # Examples
 
--   date October, 2023
+-   Date: October, 2023
 
--   author kazurayam
+-   Author: kazurayam
 
-This page shows examples of using com.kazurayam.ks.TextsDiffer class in Katalon Studio.
+This page shows the examples how to use `com.kazurayam.ks.TextsDiffer` class in Katalon Studio. You can download the jar at the \[`Releases`\](<https://github.com/kazurayam/katalon-studio-texts-diff/releases>) page.
 
 ## ex01 diff 2 strings and write the report into file
 
-The following script does
+1.  The following script calls the `diffString(String,String,String)` method of the `com.kazurayam.ks.TestsDiffer` class.
 
-1.  The following script calls `TextsDiffer.diffString(String,String,String)`.
+2.  If you would like, you can use it as an **custom Keyword** in the Manual mode of the Test Case editor.
 
-2.  The 1st and 2nd arguments are regarded as input text. The inputs contain XML texts which are similar but different in detail.
+3.  The 1st and 2nd arguments are regarded as input text. The inputs in the sample contain XML texts which are similar but different in detail.
 
-3.  The 3rd argument is regarded as a path of output file.
+4.  The 3rd argument is regarded as a path of file. The `TextDiffer` writes a diff report into the file.
 
-4.  The output will be in Markdown text format.
+5.  The output will be in Markdown text format.
 
 <!-- -->
 
@@ -58,6 +62,31 @@ The following script does
     assert out.toFile().length() > 0
 
 The diff report generated looks like this:
+
+    **DIFFERENT**
+
+    - inserted rows: 1
+    - deleted rows : 1
+    - changed rows : 2
+    - equal rows:  : 5
+
+    |line#|S|original|revised|
+    |-----|-|--------|-------|
+    |1| |&lt;doc&gt;|&lt;doc&gt;|
+    |2| |&lt;body&gt;|&lt;body&gt;|
+    |3|C|<span style="color:red; font-weight:bold; background-color:#ffeef0">&lt;section&gt;</span>|<span style="color:green; font-weight:bold; background-color:#e6ffec">&lt;section id="main"&gt;</span>|
+    |4|C|&lt;p&gt;Hello, <span style="color:red; font-weight:bold; background-color:#ffeef0">John!&lt;</span>/p&gt;|&lt;p&gt;Hello, <span style="color:green; font-weight:bold; background-color:#e6ffec">Paul!&lt;</span>/p&gt;|
+    |5|I||<span style="color:green; font-weight:bold; background-color:#e6ffec">&lt;p&gt;Have a break!&lt;/p&gt;</span>|
+    |6| |&lt;/section&gt;|&lt;/section&gt;|
+    |7|D|<span style="color:red; font-weight:bold; background-color:#ffeef0">&lt;p&gt;&lt;/p&gt;</span>||
+    |8| |&lt;/body&gt;|&lt;/body&gt;|
+    |9| |&lt;/doc&gt;|&lt;/doc&gt;|
+
+It is difficult to read in a plain text editor. You need a tool to view this nicely. If you use [Visual Studio Code, Markdown Preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview), you can see a nice preview, like this:
+
+<figure>
+<img src="https://kazurayam.github.io/katalon-studio-texts-diff/images/ex01.png" alt="ex01" />
+</figure>
 
 ## ex02 diff 2 strings and print the stats to console
 

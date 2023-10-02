@@ -113,7 +113,7 @@ This looks nice, doesn't it?
 
 The sample Test Case `ex01` uses `com.kazurayam.ks.TextsDiffer.diffString()` method that takes 2 Strings as input. The `TextsDiffer` class implements more methods that can take various types: Files, URLs etc.
 
-See the [`More examples`](https://kazurayam.github.io/kazurayam/katalon-studio-texts-diff/index.md) document for more use cases.
+See the [`Examples`](https://kazurayam.github.io/kazurayam/katalon-studio-texts-diff/) document for more use cases.
 
 ## API
 
@@ -136,14 +136,10 @@ and posted it to Katalon User Forum
 - https://forum.katalon.com/t/comparing-2-texts-in-katalon-studio/54104
 
 
-In September 2023, another Katalon user displayed his interested to this
+In September 2023, another Katalon user displayed his interested to this project:
 
 - https://forum.katalon.com/t/verify-complexjsonresponses/97722/13
 
-I reviewed my previous post and found there is a room to improve. I thought I should develop a custom Keyword and distribute it in a jar file, with which anyone can utilize the `java-diff-utils` in Katalon Studio more easily.
-
-
-
-
+I reviewed my previous post and found there is a room to improve. I thought I should develop a custom Keyword and distribute it in a jar file, with which anyone can utilize the `java-diff-utils` library in Katalon Studio more easily.
 
 
