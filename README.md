@@ -36,9 +36,9 @@ I developed the `katalon-studio-texts-diff-x.x.x` library which wraps the `java-
 
 ### Creating and running your first test
 
-You want to start Katalon Studio GUI. You want to open the `app-project` directory.
+You want to start Katalon Studio GUI.
 
-You want to create a new Test Case `ex01`, of which code looks as follows. You can just copy and paste this:
+You want to create a new Test Case `ex01` (... any name you can choose in fact), of which code looks as follows. You can just copy and paste this:
 
 ```
 import java.nio.file.Files
@@ -80,7 +80,9 @@ assert Files.exists(out)
 assert out.toFile().length() > 0
 ```
 
-The script will create a diff report in Markdown format, save it into a file `app-project/build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
+Now you want to run it.
+
+Once done, the script will create a diff report in Markdown format, save it into a file `build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
 
 ```
 **DIFFERENT**
@@ -103,7 +105,7 @@ The script will create a diff report in Markdown format, save it into a file `ap
 |9| |&lt;/doc&gt;|&lt;/doc&gt;|
 ```
 
-The raw Markdown text is hard to read in a plain text editor. So you want to view it using some viewer tool for Markdown document. For example, I personally use [Visual Studio Code, Markdown preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview). It can render the diff report in Markdown as follows.
+The raw Markdown text is hard to read in a plain text editor. So you want to view it using some viewer tool for Markdown document. For example, I personally use [Visual Studio Code, Markdown preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview). You can preview the output diff report VSCode as follows.
 
 ![ex01](./docs/images/ex01.png)
 
@@ -113,13 +115,13 @@ This looks nice, doesn't it?
 
 The sample Test Case `ex01` uses `com.kazurayam.ks.TextsDiffer.diffString()` method that takes 2 Strings as input. The `TextsDiffer` class implements more methods that can take various types: Files, URLs etc.
 
-See the [`More examples`](./docs/index.md) document for more usecases.
+See the [`More examples`](https://kazurayam.github.io/kazurayam/katalon-studio-texts-diff/index.md) document for more use cases.
 
 ## API
 
 You can have a look at the API documentation of `TextsDiffer` class at
 
-- [API doc](./docs/api/index.html)
+- [API doc](https://kazurayam.github.io/katalon-studio-texts-diff/api/index.html)
 
 ## History
 
@@ -129,14 +131,21 @@ This is project was originally created in order to propose a solution to the fol
 
 In order to answer this question, I created a Test Case
 
-- [lib-project/Test Cases/TC1](lib-project/Scripts/TC1/Script1619137698459.groovy)
+- [lib-project/Test Cases/TC1](https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Scripts/TC1/Script1619137698459.groovy)
 
-and posted it to Kataln User Forum
+and posted it to Katalon User Forum
 
 - https://forum.katalon.com/t/comparing-2-texts-in-katalon-studio/54104
+
 
 In September 2023, another Katalon user displayed his interested to this
 
 - https://forum.katalon.com/t/verify-complexjsonresponses/97722/13
 
 I reviewed my previous post and found there is a room to improve. I thought I should develop a custom Keyword and distribute it in a jar file, with which anyone can utilize the `java-diff-utils` in Katalon Studio more easily.
+
+
+
+
+
+
