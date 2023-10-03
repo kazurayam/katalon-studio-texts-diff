@@ -16,7 +16,7 @@ If you are going to use the custom Keyword in your own Katalon project, you want
 
 ## Problem to solve
 
-Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc. They sometimes want to check if 2 texts are identical or not. Additionally they want to see the detail differences, if any. I want to perform texts-diff and reporting in Katalon Studio.
+Web testers often want to compare 2 text files. The files could be in various format: CSV, JSON, XML, etc. They sometimes just want to check if 2 texts are identical or not. And they may want to see the detail differences. Katalon Studio does not offer any texts-diff feature; I want it.
 
 ## Solution
 
@@ -27,7 +27,7 @@ Utilize [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/wik
 
 In the `Drivers` directory of your Katalon project, you NEED to install 2 external jar files.
 
-![Library Management](./docs/images/LibraryManagement.png)
+![Library Management](https://kazurayam.github.io/katalon-studio-texts-diff/images/LibraryManagement.png)
 
 1. [`java-diff-utils-4.12.jar`](https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils/4.12)
 2. [`katalon-studio-texts-diff-x.x.x.jar`](https://github.com/kazurayam/katalon-studio-texts-diff/releases)
@@ -38,7 +38,7 @@ I developed the `katalon-studio-texts-diff-x.x.x` library which wraps the `java-
 
 ### Creating and running your first test
 
-You want to start Katalon Studio GUI.
+You want to start Katalon Studio GUI and open your project.
 
 You want to create a new Test Case `ex01` (... any name you can choose in fact), of which code looks as follows. You can just copy and paste this:
 
@@ -83,7 +83,7 @@ assert out.toFile().length() > 0
 
 Now you can run it as a usual Katalon Test Case by clicking the green button ![run](./docs/images/run_katalon_test.png).
 
-Once done, the script will create a diff report in Markdown format, save it into a file `build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
+Once done, the script will create a diff report and save it into a file `build/tmp/testOutput/ex01-output.md`. The output will be formatted in Markdown. The file will like this:
 
 ```
 **DIFFERENT**
@@ -108,13 +108,13 @@ Once done, the script will create a diff report in Markdown format, save it into
 
 The raw Markdown text is hard to read in a plain text editor. So you want to view it using some Markdown viewer. For example, I personally use [Visual Studio Code, Markdown preview](https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview). You can preview the report in VSCode as follows.
 
-![ex01](./docs/images/ex01.png)
+![ex01](https://kazurayam.github.io/katalon-studio-texts-diff/images/ex01.png)
 
 This looks nice, doesn't it?
 
 ## More types of input text
 
-The sample Test Case `ex01` uses `com.kazurayam.ks.TextsDiffer.diffString()` method that takes 2 Strings as input. The `TextsDiffer` class implements more methods that can take various types: Files, URLs etc.
+The sample Test Case `ex01` uses `com.kazurayam.ks.TextsDiffer.diffStrings()` method that takes 2 Strings as input. The `TextsDiffer` class implements more methods that can take various types: Files, URLs, etc.
 
 See the [`Examples`](https://kazurayam.github.io/katalon-studio-texts-diff/) document for more use cases.
 
