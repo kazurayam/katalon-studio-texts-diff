@@ -33,29 +33,28 @@ public final class TextsDiffer {
 	public TextsDiffer() {}
 
 	@Keyword
-	public final void diffFiles(String text1, String text2, String output) {
+	public final String diffFiles(String text1, String text2, String output) {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
-		this.diffFiles(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
+		return this.diffFiles(Paths.get("."), Paths.get(text1), Paths.get(text2), Paths.get(output));
 	}
 
 	@Keyword
-	public final void diffFiles(String baseDir, String text1, String text2, String output) {
+	public final String diffFiles(String baseDir, String text1, String text2, String output) {
 		Objects.requireNonNull(baseDir)
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
 		Path dir = Paths.get(baseDir)
-		this.diffFiles(dir, Paths.get(text1), Paths.get(text2), Paths.get(output))
+		return this.diffFiles(dir, Paths.get(text1), Paths.get(text2), Paths.get(output))
 	}
 
-	public final void diffFiles(Path text1, Path text2, Path output) {
-		this.diffFiles(Paths.get("."),
-				text1, text2, output)
+	public final String diffFiles(Path text1, Path text2, Path output) {
+		return this.diffFiles(Paths.get("."), text1, text2, output)
 	}
 
-	public final void diffFiles(Path baseDir, Path text1, Path text2, Path output) {
+	public final String diffFiles(Path baseDir, Path text1, Path text2, Path output) {
 		baseDir = baseDir.toAbsolutePath()
 		Path t1 = baseDir.resolve(text1)
 		// here is a small trick which you may not be aware of
@@ -70,15 +69,16 @@ public final class TextsDiffer {
 		DiffInfo diffInfo = new DiffInfo(original, revised)
 
 		StringBuilder sb = new StringBuilder()
-
 		// compile the diff report with the file path information
 		sb.append(mdFilePath(baseDir, text1, text2))
 		sb.append("\n")
 		sb.append(compileMarkdownReport(diffInfo))
-
 		//println the diff report into the output file
 		ensureParentDir(output)
 		output.toFile().text = sb.toString()
+
+		// return the concise statistics in JSON
+		return compileJsonReport(diffInfo)
 	}
 
 	@Keyword
@@ -90,19 +90,22 @@ public final class TextsDiffer {
 	}
 
 	@Keyword
-	public final void diffStrings(String text1, String text2, String output) {
-		String md = diffCharacterStreams(new StringReader(text1), new StringReader(text2))
+	public final String diffStrings(String text1, String text2, String output) {
+		List<String> original = readAllLines(new StringReader(text1))
+		List<String> revised = readAllLines(new StringReader(text2))
+		DiffInfo diffInfo = new DiffInfo(original, revised)
 		Path out = Paths.get(output)
 		ensureParentDir(out)
-		out.toFile().text = md
+		out.toFile().text = compileMarkdownReport(diffInfo)
+		return compileJsonReport(diffInfo)
 	}
 
 	@Keyword
-	public final void diffURLs(String url1, String url2, String output) {
-		this.diffURLs(new URL(url1), new URL(url2), Paths.get(output))
+	public final String diffURLs(String url1, String url2, String output) {
+		return this.diffURLs(new URL(url1), new URL(url2), Paths.get(output))
 	}
 
-	public final void diffURLs(URL url1, URL url2, Path output) {
+	public final String diffURLs(URL url1, URL url2, Path output) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("- original: `${ url1.toString() }`\n")
 		sb.append("- revised : `${ url2.toString() }`\n")
@@ -113,6 +116,7 @@ public final class TextsDiffer {
 		sb.append(compileMarkdownReport(diffInfo))
 		ensureParentDir(output)
 		output.toFile().text = sb.toString()
+		return compileJsonReport(diffInfo)
 	}
 
 	public final String compileMarkdownReport(DiffInfo diffInfo) {
@@ -150,12 +154,9 @@ public final class TextsDiffer {
 		return new DiffInfo(original, revised)
 	}
 
-	//-------------------------------------------------------------------------
-
 	private List<String> readAllLines(Reader reader) {
 		return new BufferedReader(reader).lines().collect(Collectors.toList());
 	}
-
 
 	private void validateInputs(Path baseDir, Path text1, Path text2) throws Exception {
 		// baseDir can be null
