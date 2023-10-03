@@ -67,42 +67,30 @@ public final class TextsDiffer {
 		//read all lines of the two text files
 		List<String> original = Files.readAllLines(t1)
 		List<String> revised = Files.readAllLines(t2)
+		DiffInfo diffInfo = new DiffInfo(original, revised)
 
 		StringBuilder sb = new StringBuilder()
 
 		// compile the diff report with the file path information
 		sb.append(mdFilePath(baseDir, text1, text2))
 		sb.append("\n")
-		sb.append(compileMarkdownReport(original, revised))
+		sb.append(compileMarkdownReport(diffInfo))
 
 		//println the diff report into the output file
 		ensureParentDir(output)
 		output.toFile().text = sb.toString()
 	}
 
-	public final String diffByteStreams(InputStream is1, InputStream is2) {
-		Objects.requireNonNull(is1)
-		Objects.requireNonNull(is2)
-		Reader reader1 = new InputStreamReader(is1, StandardCharsets.UTF_8)
-		Reader reader2 = new InputStreamReader(is2, StandardCharsets.UTF_8)
-		return diffCharacterStreams(reader1, reader2)
-	}
-
-	public final String diffCharacterStreams(Reader reader1, Reader reader2) {
-		List<String> original = readAllLines(reader1)
-		List<String> revised = readAllLines(reader2)
-		return compileMarkdownReport(original, revised)
-	}
-
 	@Keyword
 	public final String diffStrings(String text1, String text2) {
 		List<String> original = readAllLines(new StringReader(text1))
 		List<String> revised = readAllLines(new StringReader(text2))
-		return compileJsonReport(original, revised)
+		DiffInfo diffInfo = new DiffInfo(original, revised)
+		return compileJsonReport(diffInfo)
 	}
 
 	@Keyword
-	public final String diffStrings(String text1, String text2, String output) {
+	public final void diffStrings(String text1, String text2, String output) {
 		String md = diffCharacterStreams(new StringReader(text1), new StringReader(text2))
 		Path out = Paths.get(output)
 		ensureParentDir(out)
@@ -121,15 +109,13 @@ public final class TextsDiffer {
 		sb.append("\n")
 		InputStream is1 = url1.openStream()
 		InputStream is2 = url2.openStream()
-		String report = this.diffByteStreams(is1, is2)
-		sb.append(report)
+		DiffInfo diffInfo = this.diffByteStreams(is1, is2)
+		sb.append(compileMarkdownReport(diffInfo))
 		ensureParentDir(output)
 		output.toFile().text = sb.toString()
 	}
 
-	public final String compileMarkdownReport(List<String> original, List<String> revised) {
-		// compute the difference between the two
-		DiffInfo diffInfo = new DiffInfo(original, revised)
+	public final String compileMarkdownReport(DiffInfo diffInfo) {
 		// generate a diff report in Markdown format
 		StringBuilder sb = new StringBuilder()
 		sb.append(diffInfo.mdDifferentOrNot())
@@ -139,17 +125,32 @@ public final class TextsDiffer {
 		sb.append(diffInfo.mdDetail())
 		return sb.toString()
 	}
-	
-	public final String compileJsonReport(List<String> original, List<String> revised) {
-		// compute the difference between the two
-		DiffInfo diffInfo = new DiffInfo(original, revised)
+
+	public final String compileJsonReport(DiffInfo diffInfo) {
 		// generate a diff report in JSON format
 		StringBuilder sb = new StringBuilder()
 		sb.append(diffInfo.jsReport())
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
-	//-----------------------------------------------------------------
+	//-------------------------------------------------------------------------
+
+	private final DiffInfo diffByteStreams(InputStream is1, InputStream is2) {
+		Objects.requireNonNull(is1)
+		Objects.requireNonNull(is2)
+		Reader reader1 = new InputStreamReader(is1, StandardCharsets.UTF_8)
+		Reader reader2 = new InputStreamReader(is2, StandardCharsets.UTF_8)
+		return diffCharacterStreams(reader1, reader2)
+	}
+
+	private final DiffInfo diffCharacterStreams(Reader reader1, Reader reader2) {
+		List<String> original = readAllLines(reader1)
+		List<String> revised = readAllLines(reader2)
+		// compute the difference between the two
+		return new DiffInfo(original, revised)
+	}
+
+	//-------------------------------------------------------------------------
 
 	private List<String> readAllLines(Reader reader) {
 		return new BufferedReader(reader).lines().collect(Collectors.toList());
@@ -200,10 +201,6 @@ public final class TextsDiffer {
 		return sb.toString()
 	}
 
-	
-
-
-
 	/**
 	 * 
 	 */
@@ -213,11 +210,11 @@ public final class TextsDiffer {
 		private List<DiffRow> deletedRows
 		private List<DiffRow> changedRows
 		private List<DiffRow> equalRows
-		
+
 		private static String TAG_INSERTED_COLOR = "#e6ffec";
 		private static String TAG_DELETED_COLOR  = "#ffeef0";
 		private static String TAG_CHANGED_COLOR  = "#dbedff";
-	
+
 		DiffInfo(List<String> original, List<String> revised) {
 			// compute the difference between the two
 			DiffRowGenerator generator =
@@ -253,15 +250,15 @@ public final class TextsDiffer {
 		List<DiffRow> getEqualRows() {
 			return equalRows
 		}
-		
+
 		String mdDifferentOrNot() {
 			StringBuilder sb = new StringBuilder()
 			sb.append((this.getEqualRows().size() < this.getRows().size()) ?
-				'**DIFFERENT**' : '**NO DIFF**')
+					'**DIFFERENT**' : '**NO DIFF**')
 			sb.append("\n")
 			return sb.toString()
 		}
-		
+
 		String mdStats() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("- inserted rows: ${this.getInsertedRows().size()}\n")
@@ -270,7 +267,7 @@ public final class TextsDiffer {
 			sb.append("- equal rows:  : ${this.getEqualRows().size()}\n")
 			return sb.toString()
 		}
-	
+
 		String mdDetail() {
 			StringBuilder sb = new StringBuilder()
 			sb.append("|line#|S|original|revised|\n")
@@ -281,7 +278,7 @@ public final class TextsDiffer {
 			}
 			return sb.toString()
 		}
-		
+
 		private String getStatus(DiffRow dr) {
 			if (dr.getTag() == DiffRow.Tag.INSERT) {
 				return "I"
@@ -293,7 +290,7 @@ public final class TextsDiffer {
 				return " "
 			}
 		}
-		
+
 		String jsReport() {
 			StringBuilder sb = new StringBuilder()
 			sb.append("{")
