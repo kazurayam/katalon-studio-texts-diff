@@ -988,6 +988,6 @@ The following report shows the result.
 
 ![ex43 output2](https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output2.png)
 
-In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the it reports FileA and FileB are identical.
+In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the report clearly shows that FileA and FileB are identical.
 
-Which diff report do you like? --- You can choose either. You just want to code your test case as you like.
+Which diff report do you like? --- You can choose either. `com.kazurayam.ks.TestsDiffer` and `com.kazurayam.ks.JsonPrettyPrinter` are provided. You can use them and produce both report.
