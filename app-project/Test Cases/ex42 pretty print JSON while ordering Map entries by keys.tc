@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>ex42 pretty print JSON while ordering Map entries by keys</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>61e1f570-35d9-4818-a053-6f0716e926b8</testCaseGuid>
+</TestCaseEntity>
