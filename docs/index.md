@@ -988,6 +988,40 @@ The following report shows the result.
 
 ![ex43 output2](https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output2.png)
 
+The following Test Case creates these 2 diff reports.
+
+    import com.kazurayam.ks.TextsDiffer
+    import com.kazurayam.ks.JsonPrettyPrinter
+
+    // ex43 pretty print JSON then diff
+
+    String textA = """{
+        "key1": "value1",
+        "key2": "value2"
+    }
+    """
+    File fileA = new File("build/tmp/testOutput/ex43-fileA.json")
+    fileA.text = textA
+
+    String textB = """{
+        "key2": "value2",
+        "key1": "value1"
+    }
+    """
+    File fileB = new File("build/tmp/testOutput/ex43-fileB.json")
+    fileB.text = textB
+
+    // compare 2 JSON files as is
+    TextsDiffer differ = new TextsDiffer()
+    differ.diffFiles(fileA, fileB, new File("build/tmp/testOutput/ex43-output1.md"))
+
+    // convert 2 JSON texts (order Map entries by keys)
+    String ppA = JsonPrettyPrinter.orderMapEntriesByKeys(textA)
+    String ppB = JsonPrettyPrinter.orderMapEntriesByKeys(textB)
+
+    // compare 2 converted JSON texts
+    differ.diffStrings(ppA, ppB, "build/tmp/testOutput/ex43-output2.md")
+
 In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the report clearly shows that FileA and FileB are identical.
 
 Which diff report do you like? --- You can choose either. `com.kazurayam.ks.TestsDiffer` and `com.kazurayam.ks.JsonPrettyPrinter` are provided. You can use them and produce both report.
