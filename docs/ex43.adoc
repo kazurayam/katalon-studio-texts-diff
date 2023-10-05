@@ -33,7 +33,13 @@ The following report shows the result.
 
 image:https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output2.png[]
 
-In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the it reports FileA and FileB are identical.
+The following Test Case creates these 2 diff reports.
 
-Which diff report do you like? --- You can choose either. You just want to code your test case as you like.
+[source,groovy]
+----
+include::../app-project/Scripts/ex43 pretty print JSON then diff/Script1696501065416.groovy[]
+----
 
+In the latter diff report, both JSON are converted by the link:https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy[`com.kazurayam.ks.JsonPrettyPrinter`] class to have the same order of keys. So the report clearly shows that FileA and FileB are similar.
+
+Which diff report do you like? --- You can choose either. link:https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/TextsDiffer.groovy[`com.kazurayam.ks.TestsDiffer`] and link:https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy[`com.kazurayam.ks.JsonPrettyPrinter`] are provided. You can use them and produce both report.

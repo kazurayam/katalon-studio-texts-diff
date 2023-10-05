@@ -25,14 +25,15 @@ String original = """{
 """
 
 JsonConverter converter = new JsonConverter()
-String actual = converter.sort(original)
+String ordered = converter.orderMapEntriesByKeys(original)
 
-String pp = JsonOutput.prettyPrint(actual)
-println pp
+println ordered
 
-assert pp.indexOf("abbreviation") < pp.indexOf("client_ip")
-assert pp.indexOf("client_ip") < pp.indexOf("datetime")
-assert pp.indexOf("datetime") < pp.indexOf("day_of_week")
+assert ordered.indexOf("abbreviation") < ordered.indexOf("client_ip")
+assert ordered.indexOf("client_ip") < ordered.indexOf("datetime")
+assert ordered.indexOf("datetime") < ordered.indexOf("day_of_week")
+
+
 
 /*
 String expected = """{
@@ -41,10 +42,12 @@ String expected = """{
     "datetime": "2023-10-01T22:15:18.742317+09:00",
     "day_of_week": 0,
     "day_of_year": 274,
-    "dst": false,
-    "dst_from": null,
-    "dst_offset": 0,
-    "dst_until": null,
+    "dst": {
+        "dst": false,
+        "dst_from": null,
+        "dst_offset": 0,
+        "dst_until": null
+    },
     "raw_offset": 32400,
     "timezone": "Asia/Tokyo",
     "unixtime": 1696166118,

@@ -50,8 +50,12 @@ public final class TextsDiffer {
 		return this.diffFiles(dir, Paths.get(text1), Paths.get(text2), Paths.get(output))
 	}
 
-	public final String diffFiles(Path text1, Path text2, Path output) {
-		return this.diffFiles(Paths.get("."), text1, text2, output)
+	public final String diffFiles(File file1, File file2, File output) {
+		return diffFiles(file1.toPath(), file2.toPath(), output.toPath())	
+	}
+	
+	public final String diffFiles(Path file1, Path file2, Path output) {
+		return this.diffFiles(Paths.get("."), file1, file2, output)
 	}
 
 	public final String diffFiles(Path baseDir, Path text1, Path text2, Path output) {

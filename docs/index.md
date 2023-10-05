@@ -815,7 +815,7 @@ The result is just the same as the ex21 case.
 
 ## ex41 pretty print JSON
 
-A JSON text can be formatted in two ways --- Compact form and Pretty-printed format.
+A JSON text can be formatted in two ways --- Compact form and Pretty-printed form.
 
 Compact JSON example:
 
@@ -954,6 +954,9 @@ The following Test Case script shows how to do it.
     out.text = ordered
     print ordered
 
+Here I used the `orderMapEntitiesByKeys()` method of
+[`com.kazurayam.ks.JsonPrettyPrinter`](https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy) class. It utilizes [Jackson ObjectMapper](https://www.baeldung.com/jackson-object-mapper-tutorial) class.
+
 ## ex43 pretty print JSON then diff
 
 Let me assume I have 2 JSON instances:
@@ -985,6 +988,40 @@ The following report shows the result.
 
 ![ex43 output2](https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output2.png)
 
-In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the it reports FileA and FileB are identical.
+The following Test Case creates these 2 diff reports.
 
-Which diff report do you like? --- You can choose either. You just want to code your test case as you like.
+    import com.kazurayam.ks.TextsDiffer
+    import com.kazurayam.ks.JsonPrettyPrinter
+
+    // ex43 pretty print JSON then diff
+
+    String textA = """{
+        "key1": "value1",
+        "key2": "value2"
+    }
+    """
+    File fileA = new File("build/tmp/testOutput/ex43-fileA.json")
+    fileA.text = textA
+
+    String textB = """{
+        "key2": "value2",
+        "key1": "value1"
+    }
+    """
+    File fileB = new File("build/tmp/testOutput/ex43-fileB.json")
+    fileB.text = textB
+
+    // compare 2 JSON files as is
+    TextsDiffer differ = new TextsDiffer()
+    differ.diffFiles(fileA, fileB, new File("build/tmp/testOutput/ex43-output1.md"))
+
+    // convert 2 JSON texts (order Map entries by keys)
+    String ppA = JsonPrettyPrinter.orderMapEntriesByKeys(textA)
+    String ppB = JsonPrettyPrinter.orderMapEntriesByKeys(textB)
+
+    // compare 2 converted JSON texts
+    differ.diffStrings(ppA, ppB, "build/tmp/testOutput/ex43-output2.md")
+
+In the latter diff report, both JSON are converted by the [`com.kazurayam.ks.JsonPrettyPrinter`](https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy) class to have the same order of keys. So the report clearly shows that FileA and FileB are similar.
+
+Which diff report do you like? --- You can choose either. [`com.kazurayam.ks.TestsDiffer`](https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/TextsDiffer.groovy) and [`com.kazurayam.ks.JsonPrettyPrinter`](https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy) are provided. You can use them and produce both report.
