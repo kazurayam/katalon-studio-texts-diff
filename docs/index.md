@@ -815,7 +815,7 @@ The result is just the same as the ex21 case.
 
 ## ex41 pretty print JSON
 
-A JSON text can be formatted in two ways --- Compact form and Pretty-printed format.
+A JSON text can be formatted in two ways --- Compact form and Pretty-printed form.
 
 Compact JSON example:
 
@@ -953,6 +953,9 @@ The following Test Case script shows how to do it.
 
     out.text = ordered
     print ordered
+
+Here I used the `orderMapEntitiesByKeys()` method of
+[`com.kazurayam.ks.JsonPrettyPrinter`](https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy) class. It utilizes [Jackson ObjectMapper](https://www.baeldung.com/jackson-object-mapper-tutorial) class.
 
 ## ex43 pretty print JSON then diff
 

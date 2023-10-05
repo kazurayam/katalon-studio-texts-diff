@@ -1,6 +1,6 @@
 == ex41 pretty print JSON
 
-A JSON text can be formatted in two ways --- Compact form and Pretty-printed format.
+A JSON text can be formatted in two ways --- Compact form and Pretty-printed form.
 
 Compact JSON example:
 [source,json]

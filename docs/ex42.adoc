@@ -44,5 +44,5 @@ The following Test Case script shows how to do it.
 include::../app-project/Scripts/ex42 pretty print JSON while ordering Map entries by keys/Script1696500835297.groovy[]
 ----
 
-
-
+Here I used the `orderMapEntitiesByKeys()` method of
+link:https://github.com/kazurayam/katalon-studio-texts-diff/blob/develop/lib-project/Keywords/com/kazurayam/ks/JsonPrettyPrinter.groovy[`com.kazurayam.ks.JsonPrettyPrinter`] class. It utilizes link:https://www.baeldung.com/jackson-object-mapper-tutorial[Jackson ObjectMapper] class.
