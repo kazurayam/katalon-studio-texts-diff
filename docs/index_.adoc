@@ -22,3 +22,9 @@ include::ex21.adoc[]
 include::ex31.adoc[]
 
 include::ex32.adoc[]
+
+include::ex41.adoc[]
+
+include::ex42.adoc[]
+
+include::ex43.adoc[]

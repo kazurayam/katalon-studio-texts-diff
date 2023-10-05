@@ -8,6 +8,9 @@
     -   [ex21 diff 2 URLs](#ex21-diff-2-urls)
     -   [ex31 chronos diff](#ex31-chronos-diff)
     -   [ex32 twins diff](#ex32-twins-diff)
+    -   [ex41 pretty print JSON](#ex41-pretty-print-json)
+    -   [ex42 pretty print JSON while ordering Map entities by keys](#ex42-pretty-print-json-while-ordering-map-entities-by-keys)
+    -   [ex43 pretty print JSON then diff](#ex43-pretty-print-json-then-diff)
 
 # Examples
 
@@ -809,3 +812,179 @@ The `diff.md` file could be previewed as follows:
 ![ex32](./images/ex32.png)
 
 The result is just the same as the ex21 case.
+
+## ex41 pretty print JSON
+
+A JSON text can be formatted in two ways --- Compact form and Pretty-printed format.
+
+Compact JSON example:
+
+    { "abbreviation" : "JST", "client_ip" : "163.131.26.17", "datetime" : "2023-10-01T22:15:18.742317+09:00", "day_of_week" : 0, "day_of_year" : 274, "dst" : { "dst" : false, "dst_from" : null, "dst_offset" : 0, "dst_until" : null }, "raw_offset" : 32400, "timezone" : "Asia/Tokyo", "unixtime" : 1696166118, "utc_datetime" : "2023-10-01T13:15:18.742317+00:00", "utc_offset" : "+09:00", "week_number" : 39 }
+
+Pretty-printed JSON example:
+
+    {
+        "day_of_week": 0,
+        "datetime": "2023-10-01T22:15:18.742317+09:00",
+        "client_ip": "163.131.26.17",
+        "timezone": "Asia/Tokyo",
+        "unixtime": 1696166118,
+        "day_of_year": 274,
+        "raw_offset": 32400,
+        "abbreviation": "JST",
+        "dst": {
+            "dst_until": null,
+            "dst_offset": 0,
+            "dst": false,
+            "dst_from": null
+        },
+        "utc_datetime": "2023-10-01T13:15:18.742317+00:00",
+        "utc_offset": "+09:00",
+        "week_number": 39
+    }
+
+These 2 JSON instances are semantically identical. Semantically no different at all.
+Many of public URLs that respond JSON will use the Compact form.
+However, when I apply the "Texts Diff" tool to JSON, I want to convert
+a compact JSON into a pretty-printed JSON before taking diff.
+I believe I do not need to explain why.
+
+The following Test Case script shows how to do pretty printing.
+
+    import groovy.json.JsonOutput
+
+    String original = """
+    { "abbreviation" : "JST", "client_ip" : "163.131.26.17", "datetime" : "2023-10-01T22:15:18.742317+09:00", "day_of_week" : 0, "day_of_year" : 274, "dst" : { "dst" : false, "dst_from" : null, "dst_offset" : 0, "dst_until" : null }, "raw_offset" : 32400, "timezone" : "Asia/Tokyo", "unixtime" : 1696166118, "utc_datetime" : "2023-10-01T13:15:18.742317+00:00", "utc_offset" : "+09:00", "week_number" : 39 }
+    """
+
+    String pretty = JsonOutput.prettyPrint(original)
+    print pretty
+
+    File out = new File("./build/tmp/testOutput/ex41-output.json")
+    out.text = pretty
+
+## ex42 pretty print JSON while ordering Map entities by keys
+
+The following 2 JSON instances are semantically identical.
+
+Disordered JSON instance:
+
+    {
+        "week_number": 39,
+        "day_of_week": 0,
+        "utc_datetime": "2023-10-01T13:15:18.742317+00:00",
+        "datetime": "2023-10-01T22:15:18.742317+09:00",
+        "client_ip": "163.131.26.17",
+        "timezone": "Asia/Tokyo",
+        "unixtime": 1696166118,
+        "day_of_year": 274,
+        "raw_offset": 32400,
+        "dst" : {
+            "dst_until": null,
+            "dst_offset": 0,
+            "dst_until": null,
+            "dst": false,
+            "dst_from": null
+        },
+        "utc_offset": "+09:00",
+        "abbreviation": "JST"
+    }
+
+Ordered JSON instance:
+
+    {
+      "abbreviation" : "JST",
+      "client_ip" : "163.131.26.17",
+      "datetime" : "2023-10-01T22:15:18.742317+09:00",
+      "day_of_week" : 0,
+      "day_of_year" : 274,
+      "dst" : {
+        "dst" : false,
+        "dst_from" : null,
+        "dst_offset" : 0,
+        "dst_until" : null
+      },
+      "raw_offset" : 32400,
+      "timezone" : "Asia/Tokyo",
+      "unixtime" : 1696166118,
+      "utc_datetime" : "2023-10-01T13:15:18.742317+00:00",
+      "utc_offset" : "+09:00",
+      "week_number" : 39
+    }
+
+Please note that the `"key":"value"` pairs in the latter JSON instance
+are ordered by keys alphabetically.
+When I apply the "Texts Diff" tool to JSON, I want to convert a disordered JSON
+into a ordered JSON before taking diff.
+The following Test Case script shows how to do it.
+
+    import com.kazurayam.ks.JsonPrettyPrinter
+
+    // ex42 pretty print JSON while ordering Map entries by keys
+
+    // disorderd JSON
+    String originalText = """{
+        "week_number": 39,
+        "day_of_week": 0,
+        "utc_datetime": "2023-10-01T13:15:18.742317+00:00",
+        "datetime": "2023-10-01T22:15:18.742317+09:00",
+        "client_ip": "163.131.26.17",
+        "timezone": "Asia/Tokyo",
+        "unixtime": 1696166118,
+        "day_of_year": 274,
+        "raw_offset": 32400,
+        "dst" : {
+            "dst_until": null,
+            "dst_offset": 0,
+            "dst_until": null,
+            "dst": false,
+            "dst_from": null
+        },
+        "utc_offset": "+09:00",
+        "abbreviation": "JST"
+    }
+    """
+
+    File out = new File("./build/tmp/testOutput/ex42-output.json")
+
+    // pretty print JSON
+    JsonPrettyPrinter jpp = new JsonPrettyPrinter()
+    String ordered = jpp.orderMapEntriesByKeys(originalText)
+
+    out.text = ordered
+    print ordered
+
+## ex43 pretty print JSON then diff
+
+Let me assume I have 2 JSON instances:
+
+FileA:
+
+    {
+      "key1":"data1",
+      "key2":"data2"
+    }
+
+FileB:
+
+    {
+      "key2":"data2",
+      "key1":"data1"
+    }
+
+These 2 JSON instances are semantically identical.
+
+If I apply take textual diff of the FileA and FileB, I will get the following diff report.
+
+![ex43 output1](https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output1.png)
+
+This diff report is arguable. This report tells me that there are textual differences. However, if I do not like to be disturbed by the differences which are semantically insignificant, the above report is too noisy.
+
+Now I would apply the methodology "ex42 pretty print JSON while ordering Map entities by keys". I would convert the 2 input JSON and then take the diff.
+The following report shows the result.
+
+![ex43 output2](https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output2.png)
+
+In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the it reports FileA and FileB are identical.
+
+Which diff report do you like? --- You can choose either. You just want to code your test case as you like.
