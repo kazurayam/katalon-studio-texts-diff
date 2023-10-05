@@ -1,0 +1,48 @@
+== ex42 pretty print JSON while ordering Map entities by keys
+
+The following 2 JSON instances are semantically identical.
+
+Disordered JSON instance:
+[source,json]
+----
+{
+    "week_number": 39,
+    "day_of_week": 0,
+    "utc_datetime": "2023-10-01T13:15:18.742317+00:00",
+    "datetime": "2023-10-01T22:15:18.742317+09:00",
+    "client_ip": "163.131.26.17",
+    "timezone": "Asia/Tokyo",
+    "unixtime": 1696166118,
+    "day_of_year": 274,
+    "raw_offset": 32400,
+    "dst" : {
+        "dst_until": null,
+        "dst_offset": 0,
+        "dst_until": null,
+        "dst": false,
+        "dst_from": null
+    },
+    "utc_offset": "+09:00",
+    "abbreviation": "JST"
+}
+----
+
+Ordered JSON instance:
+[source,json]
+----
+include::../app-project/build/tmp/testOutput/ex42-output.json[]
+----
+
+Please note that the `"key":"value"` pairs in the latter JSON instance
+are ordered by keys alphabetically.
+When I apply the "Texts Diff" tool to JSON, I want to convert a disordered JSON
+into a ordered JSON before taking diff.
+The following Test Case script shows how to do it.
+
+[source,groovy]
+----
+include::../app-project/Scripts/ex42 pretty print JSON while ordering Map entries by keys/Script1696500835297.groovy[]
+----
+
+
+

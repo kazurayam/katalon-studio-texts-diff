@@ -1,0 +1,39 @@
+== ex43 pretty print JSON then diff
+
+Let me assume I have 2 JSON instances:
+
+FileA:
+[source,json]
+----
+{
+  "key1":"data1",
+  "key2":"data2"
+}
+----
+
+FileB:
+[source,json]
+----
+{
+  "key2":"data2",
+  "key1":"data1"
+}
+----
+
+These 2 JSON instances are semantically identical.
+
+If I apply take textual diff of the FileA and FileB, I will get the following diff report.
+
+image:https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output1.png[]
+
+This diff report is arguable. This report tells me that there are textual differences. However, if I do not like to be disturbed by the differences which are semantically insignificant, the above report is too noisy.
+
+Now I would apply the methodology "ex42 pretty print JSON while ordering Map entities by keys". I would convert the 2 input JSON and then take the diff.
+The following report shows the result.
+
+image:https://kazurayam.github.io/katalon-studio-texts-diff/images/ex43-output2.png[]
+
+In the latter diff report, both JSON are converted by the `com.kazurayam.ks.JsonPrettyPrinter` class to have the same order of keys. So the it reports FileA and FileB are identical.
+
+Which diff report do you like? --- You can choose either. You just want to code your test case as you like.
+
