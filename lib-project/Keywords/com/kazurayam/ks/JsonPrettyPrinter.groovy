@@ -19,15 +19,15 @@ public class JsonPrettyPrinter {
 	static String prettyPrint(String json) {
 		return JsonOutput.prettyPrint(json)
 	}
-	
+
 	static String prettyPrint(File json) {
 		return prettyPrint(json.text)
 	}
-	
+
 	static String prettyPrint(Path json) {
 		return prettyPrint(json.toFile().text)
 	}
-		
+
 	/**
 	 * pretty-print a JSON while ordering the Map entries ("key":"value" pairs) 
 	 * by alphabetical order of the keys
@@ -47,7 +47,7 @@ public class JsonPrettyPrinter {
 		assert prettified != null
 		return prettified
 	}
-	
+
 	static String orderMapEntriesByKeys(File file) {
 		return orderMapEntriesByKeys(file.text)
 	}
@@ -55,5 +55,4 @@ public class JsonPrettyPrinter {
 	static String orderMapEntriesByKeys(Path file) {
 		return orderMapEntriesByKeys(file.toFile())
 	}
-
 }
