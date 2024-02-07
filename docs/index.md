@@ -33,7 +33,7 @@ This page shows the examples how to use `com.kazurayam.ks.TextsDiffer` class in 
     import java.nio.file.Paths
 
     /**
-     * ex01 diff 2 strings and print report into console
+     * ex01 diff 2 strings and print report into console 
      */
 
     String text1 = """<doc>
@@ -416,7 +416,7 @@ The following code shows the essence of the work.
 
     /**
      * ex31 chronos diff
-     *
+     * 
      * download JSON from a URL into file, do it twice, then diff
      */
 
@@ -429,7 +429,7 @@ The following code shows the essence of the work.
 
     def prettyPrintJson(Path json) {
         String t = JsonOutput.prettyPrint(json.toFile().text)
-        json.toFile().text = t
+        json.toFile().text = t  
     }
 
     // Thanks to https://worldtimeapi.org/pages/examples
@@ -440,7 +440,7 @@ The following code shows the essence of the work.
     Path text1 = Paths.get("build/tmp/testOutput/ex31/text1.json")
     Path text2 = Paths.get("build/tmp/testOutput/ex31/text2.json")
 
-    // 1st download a JSON from the URL
+    // 1st download a JSON from the URL 
     downloadURL(url, text1.toFile())
     prettyPrintJson(text1)
 
@@ -566,8 +566,8 @@ The following code shows the essence of the work.
     import com.kms.katalon.core.configuration.RunConfiguration
 
     /**
-     * ex32 twins diff
-     *
+     * ex32 twins diff 
+     * 
      * download HTML from a pair of URLs of similar looking, then diff
      */
 
