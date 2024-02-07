@@ -145,25 +145,25 @@ Your input texts sometimes could be very long. Let me assume, for example, that 
 1. [bootstrap-icons.css 1.5.0](https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css)
 2. [bootstrap-icons.css 1.7.2](https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css)
 
-Both of them are long text: over 1500 lines. These files are slightly different, as the following stats shows:
+Both of them are very long: over 1500 lines. And these texts are slightly different, as the following stats shows:
 
 - inserted rows : 166
 - deleted rows  : 0
 - changed rows  : 2
 - equal rows:   : 1388
 
-Obviously I am only interested in the difference (inserted, deleted, changed); I am not interested in the equal parts. In this case, 90% of lines are not interesting for me. I do not like the diff report to contain boring equal lines.
+Obviously I am only interested in the difference (inserted, deleted, changed); I am not interested in the equal parts. In this case, approximately 90% of lines are not interesting for me. I do not like the diff report to contain the boring equal lines.
 
-So, the `java-diff-report` library supports 2 format of diff report: "compact" and "full". You can chose either by specifying a parameter. The compact report will ommit most of the equal lines. With the above example input the library will emit a report that contains only approximately 200 lines, not 1500 lines. The output report will look something like this:
+So, the `java-diff-report` library supports 2 format of diff report: "compact" and "full". You can chose either by specifying a parameter. "compact" is the default. The compact report will trim most of the equal lines. The diff report of the above inputs will contain have only 200 lines, not 1500 lines.The report will look something like this:
 
 ![large inputs](https://kazurayam.github.io/katalon-studio-texts-diff/images/diff_large_inputs.png)
 
-Please note that there is a gap between line#24 and line#1391, where hundreds of "equal" lines are trimmed. Therefore the report file is small enough to look through very quickly.
+Please note that there is a gap between the line#24 and line#1391 where hundreds of "equal" lines are trimmed off. Therefore the report file is small and easy to look through quickly.
 
 
 ## More types of input text
 
-The sample Test Case `ex01` uses `com.kazurayam.ks.TextsDiffer.diffStrings()` method that takes 2 Strings as input. The `TextsDiffer` class implements more methods that can take various types: Files, URLs, etc.
+The sample Test Case `ex02` uses `com.kazurayam.ks.TextsDiffer.diffStrings()` method that takes 2 Strings as input. The `com.kazurayam.ks.TextsDiffer` class implements more variations of method signature that can take other types: `java.io.File`, `java.nio.Path` and `java.net.URL`.
 
 See the [`Examples`](https://kazurayam.github.io/katalon-studio-texts-diff/) document for more use cases.
 
