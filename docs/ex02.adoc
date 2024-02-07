@@ -1,16 +1,14 @@
-== ex02 diff 2 strings and print the stats to console
+== ex02 diff 2 strings and write report into file
 
 The following script does
 
-
-1. The following script calls `TextsDiffer.diffString(String,String)`.
+1. The following script calls `com.kazurayam.ks.TextsDiffer.diffStrings(String, String, String)`.
 2. The 1st and 2nd arguments are regarded as input text. The inputs contain XML texts which are similar but different in detail.
-3. `TextsDiffer.diffString(String,String)` with 2 arguments will return a String value.
-4. The returned String will be a short JSON text, which contains the statistical information of the diff report.
+3. The 3rd argument is regarded as a file to write a report into.
 
 [source,groovy]
 ----
-include::../app-project/Scripts/ex02 diff 2 strings and print the stats to console/Script1696208256058.groovy[]
+include::../app-project/Scripts/ex02 diff 2 strings and write report into file/Script1707312794892.groovy[]
 ----
 
 When I run it, this script emits the following JSON in the console.

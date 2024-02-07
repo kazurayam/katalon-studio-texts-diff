@@ -3,7 +3,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
- * ex01 diff 2 strings and write the report into file 
+ * ex01 diff 2 strings and print report into console 
  */
 
 String text1 = """<doc>
@@ -26,12 +26,7 @@ String text2 = """<doc>
 </doc>
 """
 
-String outpath = "build/tmp/testoutput/ex01-output.md"
-
 // take diff of 2 Strings, write the diff report into a file
-CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2, outpath)
-
-Path out = Paths.get(outpath)
-assert Files.exists(out)
-assert out.toFile().length() > 0
+String report = CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2)
+println report
 

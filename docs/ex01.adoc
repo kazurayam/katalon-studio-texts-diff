@@ -1,14 +1,15 @@
-== ex01 diff 2 strings and write the report into file
+== ex01 diff 2 strings and print the diff report into console
 
-1. The following script calls the `diffString(String,String,String)` method of the `com.kazurayam.ks.TestsDiffer` class.
+1. The following script calls the `diffStrings(String,String)` method of the `com.kazurayam.ks.TestsDiffer` class.
 2. If you would like, you can use it as an *custom Keyword* in the Manual mode of the Test Case editor.
 3. The 1st and 2nd arguments are regarded as input text. The inputs in the sample contain XML texts which are similar but different in detail.
-4. The 3rd argument is regarded as a path of file. The `TextDiffer` writes a diff report into the file.
-5. The output will be in Markdown text format.
+4. The call to `diffStrings` method returns a String, which is the diff report of the 2 inputs.
+5. The report will be in Markdown text format.
+6. The script prints the report into the console
 
 [source,groovy]
 ----
-include::../app-project/Scripts/ex01 diff 2 strings and write the report into file/Script1696166007171.groovy[]
+include::../app-project/Scripts/ex01 diff 2 strings and print report into console/Script1707312770625.groovy[]
 ----
 
 The diff report generated looks like this:
@@ -34,6 +35,6 @@ The diff report generated looks like this:
 |9| |&lt;/doc&gt;|&lt;/doc&gt;|
 ```
 
-It is difficult to read in a plain text editor. You need a tool to view this nicely. If you use link:https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview[Visual Studio Code, Markdown Preview], you can see a nice preview, like this:
+It is difficult to read in a plain text editor. You would definitely need a Markdown viewer. link:https://code.visualstudio.com/Docs/languages/markdown#_markdown-preview[Visual Studio Code, Markdown Preview] will let you handle any Markdown texts very nicely,like this:
 
 image::https://kazurayam.github.io/katalon-studio-texts-diff/images/ex01.png[]

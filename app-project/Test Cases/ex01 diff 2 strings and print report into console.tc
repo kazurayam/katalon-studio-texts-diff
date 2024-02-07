@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ex01 diff 2 strings and write the report into file</name>
+   <name>ex01 diff 2 strings and print report into console</name>
    <tag></tag>
    <comment></comment>
    <testCaseGuid>4db8d782-cdc2-462a-92df-55fbc9591e7d</testCaseGuid>
