@@ -7,20 +7,29 @@ version = "0.5.0-SNAPSHOT"
 
 ext {
   groovyVersion = '2.4.2'
+  javadiffutilsVersion = '4.12'
+  javadiffreportVersion = '0.1.0-SNAPSHOT'
+  AUTO_IMPORTED_JAR_PREFIX = 'AUTOIMPORTED_'
 }
 
 configurations {
   generateDocs
+  katalonDrivers
 }
 
 repositories {
   mavenCentral()
+  mavenLocal()
 }
 
 dependencies {
+  katalonDrivers "io.github.java-diff-utils:java-diff-utils:${javadiffutilsVersion}"
+  katalonDrivers "com.kazurayam:java-diff-report:${javadiffreportVersion}"
+
   implementation fileTree(dir: "./Drivers", include: ['*.jar'])
   implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
   implementation fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+  
   generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
 }
 
@@ -67,3 +76,21 @@ task sourcesJar(type: Jar) {
 
 build.finalizedBy groovydocJar, sourcesJar
 
+task drivers {
+  doFirst {
+    delete fileTree("./Drivers") {
+      include("**/" + AUTO_IMPORTED_JAR_PREFIX + "*")
+    }
+  }
+  doLast {
+    copy {
+      from configurations.katalonDrivers
+      into("Drivers") {
+        include "**/java-diff-utils*.jar"
+        include "**/java-diff-report*.jar"
+      }
+      eachFile({ f -> println f.getName()})
+      rename({ s -> "${AUTO_IMPORTED_JAR_PREFIX}${s}"})
+    }
+  }
+}

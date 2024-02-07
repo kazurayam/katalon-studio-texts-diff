@@ -5,9 +5,9 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 // https://github.com/kazurayam/java-diff-report
-import com.kazurayam.diffutil.text.DiffInfo
-import com.kazurayam.diffutil.text.DiffInfoReporter
-import com.kazurayam.diffutil.text.Differ
+import com.kazurayam.difflib.text.DiffInfo
+import com.kazurayam.difflib.text.MarkdownReporter
+import com.kazurayam.difflib.text.Differ
 
 import com.kms.katalon.core.annotation.Keyword
 import com.kms.katalon.core.configuration.RunConfiguration
@@ -57,8 +57,9 @@ public final class TextsDiffer {
 	public final String diffFiles(Path file1, Path file2, Path output) {
 		Files.createDirectories(output.getParent())
 		DiffInfo diffInfo = Differ.diffFiles(file1, file2)
-		output.toFile().text = DiffInfoReporter.compileMarkdownReport(diffInfo)
-		return DiffInfoReporter.compileStatsJson(diffInfo)
+		MarkdownReporter reporter = new MarkdownReporter.Builder(diffInfo).build();
+		output.toFile().text = reporter.compileMarkdownReport()
+		return reporter.compileStats()
 	}
 
 	//-------------------------------------------------------------------------
@@ -68,19 +69,32 @@ public final class TextsDiffer {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		DiffInfo diffInfo = Differ.diffStrings(text1, text2)
-		return DiffInfoReporter.compileStatsJson(diffInfo)
+		MarkdownReporter reporter = new MarkdownReporter.Builder(diffInfo).build();
+		return reporter.compileMarkdownReport()
 	}
 
 	@Keyword
 	public final String diffStrings(String text1, String text2, String output) {
+		return diffStrings(text1, text2, output, null, null)
+	}
+
+	@Keyword
+	public final String diffStrings(String text1, String text2, String output, String description1, String description2) {
 		Objects.requireNonNull(text1)
 		Objects.requireNonNull(text2)
 		Objects.requireNonNull(output)
 		Path out = Paths.get(output)
 		Files.createDirectories(out.getParent())
 		DiffInfo diffInfo = Differ.diffStrings(text1, text2)
-		out.toFile().text = DiffInfoReporter.compileMarkdownReport(diffInfo)
-		return DiffInfoReporter.compileStatsJson(diffInfo)
+		if (description1 != null) {
+			diffInfo.setPathOriginal(description1)
+		}
+		if (description2 != null) {
+			diffInfo.setPathRevised(description2)
+		}
+		MarkdownReporter reporter = new MarkdownReporter.Builder(diffInfo).build();
+		out.toFile().text = reporter.compileMarkdownReport()
+		return reporter.compileStats()
 	}
 
 	//-------------------------------------------------------------------------
@@ -96,7 +110,8 @@ public final class TextsDiffer {
 	public final String diffURLs(URL url1, URL url2, Path output) {
 		Files.createDirectories(output.getParent())
 		DiffInfo diffInfo = Differ.diffURLs(url1, url2);
-		output.toFile().text = DiffInfoReporter.compileMarkdownReport(diffInfo);
-		return DiffInfoReporter.compileStatsJson(diffInfo)
+		MarkdownReporter reporter = new MarkdownReporter.Builder(diffInfo).build();
+		output.toFile().text = reporter.compileMarkdownReport();
+		return reporter.compileStats()
 	}
 }

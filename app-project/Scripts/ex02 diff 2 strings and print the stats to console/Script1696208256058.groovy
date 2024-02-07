@@ -1,4 +1,8 @@
-import groovy.json.JsonSlurper
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+
+import com.kms.katalon.core.configuration.RunConfiguration
 
 /**
  * ex02 diff 2 strings and print the stats to console
@@ -24,13 +28,21 @@ String text2 = """<doc>
 </doc>
 """
 
-// pass 2 arguments of String to receive a String as report
-String json = CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2)
-println json
+// output
+Path outDir = Paths.get(RunConfiguration.getProjectDir()).resolve("build/tmp/testOutput")
+Files.createDirectories(outDir)
+Path reportFile = outDir.resolve("ex02-output.md")
 
-// parse the returned JSON, read the content to make assertions
-JsonSlurper slurper = new JsonSlurper()
-def object = slurper.parseText(json)
-assert object instanceof Map
-assert object.isDifferent == true
-assert object.changedRows == 2
+// pass 2 arguments of String to receive a report in Markdown format
+String stats = CustomKeywords.'com.kazurayam.ks.TextsDiffer.diffStrings'(text1, text2, reportFile.toString())
+println stats
+
+String report = reportFile.text;
+assert report.contains("**DIFFERENT**")
+assert report.contains("inserted rows")
+assert report.contains("deleted rows")
+assert report.contains("changed rows")
+assert report.contains("equal rows")
+
+assert report.contains("| 1 |")
+assert report.contains("&lt;doc&gt;")
