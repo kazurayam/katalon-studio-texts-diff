@@ -3,13 +3,12 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.5.0-SNAPSHOT"
+version = "0.5.0"
 
 ext {
   groovyVersion = '2.4.2'
   javadiffutilsVersion = '4.12'
-  javadiffreportVersion = '0.1.0-SNAPSHOT'
-  AUTO_IMPORTED_JAR_PREFIX = 'AUTOIMPORTED_'
+  javadiffreportVersion = '0.4.0'
 }
 
 configurations {
@@ -29,7 +28,7 @@ dependencies {
   implementation fileTree(dir: "./Drivers", include: ['*.jar'])
   implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
   implementation fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
-  
+
   generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
 }
 

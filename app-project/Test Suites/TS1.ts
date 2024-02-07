@@ -22,7 +22,7 @@
       <guid>d3c3d815-4164-4a0c-be45-3c6208480fe5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/ex02 diff 2 strings and print the stats to console</testCaseId>
+      <testCaseId>Test Cases/ex02 diff 2 strings and write report into file</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -36,7 +36,7 @@
       <guid>37c1d9cb-adb7-4c2c-9c7e-d606d642f1df</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/ex01 diff 2 strings and write the report into file</testCaseId>
+      <testCaseId>Test Cases/ex01 diff 2 strings and print report into console</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

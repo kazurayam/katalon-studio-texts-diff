@@ -1,9 +1,11 @@
 = Examples
 
-- Date: October, 2023
+- Date: Feb, 2024
 - Author: kazurayam
+- version: 0.5.0
 
-This page shows the examples how to use `com.kazurayam.ks.TextsDiffer` class in Katalon Studio. You can download the jar at the [`Releases`](https://github.com/kazurayam/katalon-studio-texts-diff/releases) page.
+This page shows the examples how to use `com.kazurayam.ks.TextsDiffer` class in Katalon Studio. You can download the jar at the
+  link:https://github.com/kazurayam/katalon-studio-texts-diff/releases[Releases] page.
 
 include::ex01.adoc[]
 
